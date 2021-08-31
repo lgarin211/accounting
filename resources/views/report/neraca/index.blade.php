@@ -33,8 +33,12 @@
                                     </ul>
                                     @endforeach
                                     <div class="form-group">
-                                        <label for="" class="text-primary"><a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">Total {{ $row->name }}</a></label>
-                                        <h4 class="text-right">Rp. {{ number_format($row->debit - $row->kredit) }}</h4>
+                                        <label for="" class="text-primary">
+                                            <a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
+                                                Total {{ $row->name }}
+                                            </a>
+                                        </label>
+                                        <h4 class="text-right">Rp. {{ number_format($row->debit) }}</h4>
                                     </div>
                                 </li>
 
@@ -65,8 +69,12 @@
                                     </ul>
                                     @endforeach
                                     <div class="form-group">
-                                        <label for="" class="text-primary"><a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">Total {{ $row->name }}</a></label>
-                                        <h4 class="text-right">Rp. {{ number_format($row->debit - $row->kredit) }}</h4>
+                                        <label for="" class="text-primary">
+                                            <a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
+                                                Total {{ $row->name }}
+                                            </a>
+                                        </label>
+                                        <h4 class="text-right">Rp. {{ number_format($row->kredit) }}</h4>
                                     </div>
                                 </li>
 
