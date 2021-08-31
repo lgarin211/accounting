@@ -19,10 +19,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Aktiva</h5>
                             @foreach($aktiva->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                       {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>
@@ -51,10 +51,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Kewajiban</h5>
                             @foreach($kewajiban->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                        {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>
@@ -83,10 +83,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Modal</h5>
                             @foreach($modal->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                        {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>
