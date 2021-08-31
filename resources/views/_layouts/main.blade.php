@@ -5,7 +5,11 @@
     <!-- initiate head with meta tags, css and script -->
     @include('_includes.head')
 </head>
-
+<style>
+    .no-bullet {
+        list-style-type: none;
+    }
+</style>
 <body class="horizontal-layout horizontal-menu navbar-floating footer-static" data-open="hover" data-menu="horizontal-menu" data-col="">
     <!-- BEGIN: NAVBAR -->
     @include('_components.navbar')
