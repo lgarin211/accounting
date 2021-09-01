@@ -114,7 +114,7 @@ Route::middleware('auth')->group(function () {
             //Pinjam
             Route::get('/pinjam/import/form', 'PinjamController@import_form')->name('pinjam.import_form');
             Route::post('/pinjam/import', 'PinjamController@import')->name('pinjam.import');
-            Route::get('/pinjam/export', 'PInjamController@export')->name('pinjam.export');
+            Route::get('/pinjam/export', 'PinjamController@export')->name('pinjam.export');
             Route::resource('pinjam', 'PinjamController');
             Route::post('/pinjam/detail', 'PinjamController@detail')->name('pinjam.detail');
         });
