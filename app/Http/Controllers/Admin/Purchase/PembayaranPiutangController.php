@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin\Purchase;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akun;
 use App\Models\Purchase\FakturBuy;
 use App\Models\Purchase\PembayaranPiutangBuy;
 use App\Models\Purchase\PembayaranPiutangDetailBuy;
 use App\Models\Purchase\PiutangBuy;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
 
@@ -107,11 +109,25 @@ class PembayaranPiutangController extends Controller
                         'status' => $piutang->total_hutang == preg_replace('/[^\d.]/', '', $pembayaran['bayar']) ? '1' : '0'
                     ]);
 
+                    Transaction::create([
+                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'akun_id' => $request->akun_id,
+                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
+                        'type' => 'Pembelian Lunas',
+                    ]);
+
+                    $akun = Akun::findOrFail($request->akun_id);
+                    $akun->update([
+                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
+                    ]);
+
+
                     if($piutang->status == 1){
                         $faktur = FakturBuy::findOrFail($pembayaran['faktur_id']);
                         $faktur->update([
                             'status' => '1'
                         ]);
+
                     }
                 }
             });

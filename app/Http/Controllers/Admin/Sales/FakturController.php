@@ -8,6 +8,7 @@ use App\Models\Purchase\FakturBuy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
 use App\Models\Sale\{FakturSale, FakturSaleDetail, PiutangSale};
+use App\Models\Transaction;
 
 class FakturController extends Controller
 {
@@ -106,6 +107,14 @@ class FakturController extends Controller
                     $akun->update([
                         'kredit' => $fakturs->total
                     ]);
+
+                    Transaction::create([
+                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'akun_id' => 3,
+                        'kredit' => $fakturs->total,
+                        'type' => 'Penjualan Hutang',
+                    ]);
+
                     PiutangSale::create([
                         'pelanggan_id' => $fakturs->pelanggan_id,
                         'faktur_id' => $fakturs->id,
