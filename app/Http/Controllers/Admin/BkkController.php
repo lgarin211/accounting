@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Bkk, BkkDetail,Akun};
+use App\Models\{Bkk, BkkDetail,Akun,Transaction};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -88,16 +88,31 @@ class BkkController extends Controller
                     DB::table('akuns')->where('id',$detail['rekening'])->update([
                         'debit'=> DB::raw('debit + '.$jumlah_uang) 
                     ]);
+                    Transaction::create([
+                        'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
+                        'akun_id' => $detail['rekening'],
+                        'debit' => $jumlah_uang,
+                        'kredit' => 0,
+                        'type' => 'Buku Kas Keluar'
+                    ]);
                     BkkDetail::create([
                         'bkk_id' => $bkk->id,
                         'rekening_id' => $detail['rekening'],
                         'jml_uang' => $jumlah_uang,
                         'catatan' => $detail['catatan'],
                     ]);
+                    
                     $totalUang += $jumlah_uang;
                 }
                 DB::table('akuns')->where('id',$request['rekening_id'])->update([
                     'kredit'=> DB::raw('kredit + '.$totalUang) 
+                ]);
+                Transaction::create([
+                    'name' => $request['desk'] . ' ' . date('d-M-Y'),
+                    'akun_id' => $request['rekening_id'],
+                    'debit' => 0,
+                    'kredit' => $totalUang,
+                    'type' => 'Buku Kas Keluar'
                 ]);
                 $bkk->update(['value' => $totalUang]);
             });
