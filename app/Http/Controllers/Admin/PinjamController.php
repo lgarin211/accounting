@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PinjamExport;
 use App\Http\Controllers\Controller;
+use App\Imports\PinjamImport;
 use App\Models\Kontak;
 use App\Models\Pinjam;
+use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PinjamController extends Controller
 {
@@ -163,18 +168,29 @@ class PinjamController extends Controller
 
     public function store(Request $request)
     {
-        Pinjam::create([
-            'jumlah_pinjaman' => (int)preg_replace('/[^\d.]/', '', $request->besar_pinjman),
-            'jangka' => $request->jangka,
-            'bungapersen' => $request->bungapersen,
-            'type' => $request->tipe,
-            'total_bunga' => $request->bunga,
-            'total_pokok' => $request->pokok,
-            'keterangan' => $request->keterangan,
-            'nasabah_id' => $request->nasabah_id,
-            'petugas_id' => $request->petugas_id
-        ]);
-        return redirect()->route('admin.pinjam.index');
+        try {
+            $pinjam = Pinjam::create([
+                'jumlah_pinjaman' => (int)preg_replace('/[^\d.]/', '', $request->besar_pinjman),
+                'jangka' => $request->jangka,
+                'bungapersen' => $request->bungapersen,
+                'type' => $request->tipe,
+                'total_bunga' => $request->bunga,
+                'total_pokok' => $request->pokok,
+                'keterangan' => $request->keterangan,
+                'nasabah_id' => $request->nasabah_id,
+                'petugas_id' => $request->petugas_id
+            ]);
+            Transaction::create([
+                'name' => $pinjam->keterangan . ' ' . date('d-M-Y'),
+                'akun_id' => 11, //ambil akun piutang KPR swakelola
+                'debit' => 0,
+                'kredit' => $pinjam->jumlah_pinjaman,
+                'type' => 'pinjam'
+            ]);
+        } catch (\Exception $e) {
+            return 'error ' . $e->getMessage();
+        }
+        return redirect()->route('admin.pinjam.index')->with('success', 'Pinjaman berhasil');
     }
     /**
      * Display the specified resource.
@@ -454,5 +470,32 @@ class PinjamController extends Controller
         $pinjam = Pinjam::findOrFail($id);
         $pinjam->delete();
         return back()->with('success', 'Berhasil Menghapus Pinjaman');
+    }
+    public function export()
+    {
+        ob_end_clean();
+        ob_start();
+        return Excel::download(new PinjamExport(), 'Pinjam Export.xlsx');
+    }
+    public function import_form()
+    {
+        return view('admin.pinjam.import',[
+            'kontak' => Kontak::get()
+        ]);
+    }
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'import' => 'required|mimes:csv,xlsx,xls'
+        ]);
+        try {
+            $file = $request->file('import');
+            $name_file = rand() . '_' . $file->getClientOriginalName();
+            $file->move('import/pinjam/', $name_file);
+            Excel::import(new PinjamImport, public_path('import/pinjam/' . $name_file));
+            return redirect('/admin/simpanpinjam/pinjam');
+        } catch (Exception $err) {
+            dd($err->getMessage());
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Sales;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akun;
 use App\Models\Purchase\FakturBuy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
@@ -101,6 +102,10 @@ class FakturController extends Controller
 
                 if(empty($request->status) && empty($request->akun_id))
                 {
+                    $akun = Akun::findOrFail(3);
+                    $akun->update([
+                        'kredit' => $fakturs->total
+                    ]);
                     PiutangSale::create([
                         'pelanggan_id' => $fakturs->pelanggan_id,
                         'faktur_id' => $fakturs->id,

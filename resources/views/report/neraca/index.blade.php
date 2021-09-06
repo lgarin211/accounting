@@ -10,6 +10,14 @@
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-around">
+                        <a target="_blank" href="{{ route('admin.report.keuangan.neraca.pdf') }}" class="btn btn-danger">PDF</a>
+                        <a target="_blank" href="{{ route('admin.report.keuangan.neraca.excel') }}" class="btn btn-success">EXCEL</a>
+                    </div>
+                </div>
+            </div>
             <div class="card shadow rounded">
                 <p class="text-black text-center pt-2 font-weight-bolder">Direktorat Keuangan TNI Angkatan Darat</p>
                 <h2 class="text-center text-primary">Neraca</h2>
@@ -19,10 +27,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Aktiva</h5>
                             @foreach($aktiva->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                       {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>
@@ -33,8 +41,12 @@
                                     </ul>
                                     @endforeach
                                     <div class="form-group">
-                                        <label for="" class="text-primary"><a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">Total {{ $row->name }}</a></label>
-                                        <h4 class="text-right">Rp. {{ number_format($row->debit - $row->kredit) }}</h4>
+                                        <label for="" class="text-primary">
+                                            <a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
+                                                Total {{ $row->name }}
+                                            </a>
+                                        </label>
+                                        <h4 class="text-right">Rp. {{ number_format($row->debit) }}</h4>
                                     </div>
                                 </li>
 
@@ -51,10 +63,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Kewajiban</h5>
                             @foreach($kewajiban->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                        {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>
@@ -65,8 +77,12 @@
                                     </ul>
                                     @endforeach
                                     <div class="form-group">
-                                        <label for="" class="text-primary"><a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">Total {{ $row->name }}</a></label>
-                                        <h4 class="text-right">Rp. {{ number_format($row->debit - $row->kredit) }}</h4>
+                                        <label for="" class="text-primary">
+                                            <a href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
+                                                Total {{ $row->name }}
+                                            </a>
+                                        </label>
+                                        <h4 class="text-right">Rp. {{ number_format($row->kredit) }}</h4>
                                     </div>
                                 </li>
 
@@ -83,10 +99,10 @@
                         <div class="col-12">
                             <h5 class="text-primary">Modal</h5>
                             @foreach($modal->unique('id') as $row)
-                            <ul>
+                            <ul class="no-bullet">
                                 <li>
                                     <h4>
-                                        {{ $row->name }}
+                                        {{ $row->kode }} - {{ $row->name }}
                                     </h4>
                                     @foreach($row->where('level', $row->level) as $data)
                                     <ul>

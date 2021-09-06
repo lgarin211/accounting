@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Purchase;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akun;
 use App\Models\Purchase\FakturBuy;
 use App\Models\Purchase\FakturBuyDetail;
 use App\Models\Purchase\PiutangBuy;
@@ -103,6 +104,11 @@ class FakturBuyController extends Controller
 
                 if(empty($request->status) && empty($request->akun_id))
                 {
+                    $akun = Akun::findOrFail(10);
+                    $akun->update([
+                        'kredit' => $fakturs->total
+                    ]);
+
                     PiutangBuy::create([
                         'pemasok_id' => $fakturs->pemasok_id,
                         'faktur_id' => $fakturs->id,
