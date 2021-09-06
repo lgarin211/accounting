@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\SimpanImport;
 use App\Models\Kontak;
 use App\Models\Simpan;
+use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -62,7 +63,14 @@ class SimpanController extends Controller
             return redirect()->back()->withErrors($allReq);
         }
         try {
-            Simpan::create($attr);
+            $simpan = Simpan::create($attr);
+            Transaction::create([
+                'name' => $simpan->keterangan . ' ' . date('d-M-Y'),
+                'akun_id' => 12, //ambil akun simpanan twp
+                'debit' => $simpan->setoran,
+                'kredit' => 0,
+                'type' => 'simpan'
+            ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Simpanan gagal!' . $e->getMessage());
         }
