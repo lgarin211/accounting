@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\PinjamImport;
 use App\Models\Kontak;
 use App\Models\Pinjam;
+use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -167,18 +168,29 @@ class PinjamController extends Controller
 
     public function store(Request $request)
     {
-        Pinjam::create([
-            'jumlah_pinjaman' => (int)preg_replace('/[^\d.]/', '', $request->besar_pinjman),
-            'jangka' => $request->jangka,
-            'bungapersen' => $request->bungapersen,
-            'type' => $request->tipe,
-            'total_bunga' => $request->bunga,
-            'total_pokok' => $request->pokok,
-            'keterangan' => $request->keterangan,
-            'nasabah_id' => $request->nasabah_id,
-            'petugas_id' => $request->petugas_id
-        ]);
-        return redirect()->route('admin.pinjam.index');
+        try {
+            $pinjam = Pinjam::create([
+                'jumlah_pinjaman' => (int)preg_replace('/[^\d.]/', '', $request->besar_pinjman),
+                'jangka' => $request->jangka,
+                'bungapersen' => $request->bungapersen,
+                'type' => $request->tipe,
+                'total_bunga' => $request->bunga,
+                'total_pokok' => $request->pokok,
+                'keterangan' => $request->keterangan,
+                'nasabah_id' => $request->nasabah_id,
+                'petugas_id' => $request->petugas_id
+            ]);
+            Transaction::create([
+                'name' => $pinjam->keterangan . ' ' . date('d-M-Y'),
+                'akun_id' => 11, //ambil akun piutang KPR swakelola
+                'debit' => 0,
+                'kredit' => $pinjam->jumlah_pinjaman,
+                'type' => 'pinjam'
+            ]);
+        } catch (\Exception $e) {
+            return 'error ' . $e->getMessage();
+        }
+        return redirect()->route('admin.pinjam.index')->with('success', 'Pinjaman berhasil');
     }
     /**
      * Display the specified resource.
