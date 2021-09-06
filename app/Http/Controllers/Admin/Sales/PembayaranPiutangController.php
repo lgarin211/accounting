@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin\Sales;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akun;
 use App\Models\Sale\FakturSale;
 use App\Models\Sale\PembayaranPiutangDetailSale;
 use App\Models\Sale\PembayaranPiutangSale;
 use App\Models\Sale\PiutangSale;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
 
@@ -106,6 +108,19 @@ class PembayaranPiutangController extends Controller
                         'lunas' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'sisa' => $piutang->total_hutang - preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'status' => $piutang->total_hutang == preg_replace('/[^\d.]/', '', $pembayaran['bayar']) ? '1' : '0'
+                    ]);
+
+                    
+                    Transaction::create([
+                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'akun_id' => $request->akun_id,
+                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
+                        'type' => 'Penjualan Lunas',
+                    ]);
+
+                    $akun = Akun::findOrFail($request->akun_id);
+                    $akun->update([
+                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
                     ]);
 
                     if($piutang->status == 1){

@@ -7,6 +7,7 @@ use App\Models\Akun;
 use App\Models\Purchase\FakturBuy;
 use App\Models\Purchase\FakturBuyDetail;
 use App\Models\Purchase\PiutangBuy;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
 
@@ -107,6 +108,14 @@ class FakturBuyController extends Controller
                     $akun = Akun::findOrFail(10);
                     $akun->update([
                         'kredit' => $fakturs->total
+                    ]);
+
+                    
+                    Transaction::create([
+                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'akun_id' => 10,
+                        'kredit' => $fakturs->total,
+                        'type' => 'Pembelian Hutang',
                     ]);
 
                     PiutangBuy::create([
