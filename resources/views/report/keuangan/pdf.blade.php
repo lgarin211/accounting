@@ -6,61 +6,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
-
     <div class="container">
-        <div class="d-flex justify-content-center">
-            <div class="col-8">
-                <div class="card rounded">
-                    <img src="{{ public_path('pdf/logoijo-removebg-preview.png') }}" alt="" width="90px" style="margin-left : 42%">
-
-                    <h2 class="text-black text-center pt-2 font-weight-bolder" style="text-align: center;color : #6e6b7b">Direktorat Keuangan TNI Angkatan Darat</h2>
-                    <h2 class="text-center text-primary" style="text-align: center;color : #7367f0">Laba Rugi</h2>
-                    <p class="text-black text-center" style="text-align: center;color : #6e6b7b">{{ date('F Y') }}</p>
-                    <br>
-                    <hr>
-                    <br>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table cellpadding="20px" class="" border="1" style="margin-left: auto;margin-right: auto;">
-                                <tr>
-                                    <th class="text-primary" style="color : #7367f0">
-                                        Pendapatan
-                                    </th>
-                                    <td class="text-right" style="text-align: center;color : #6e6b7b;">{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-primary" style="text-align: left; color : #7367f0">
-                                        Beban atas pendapatan
-                                    </th>
-                                    <td class="text-right" style="text-align: center;color : #6e6b7b">{{ 'Rp. ' . number_format($beban, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr class="border-top border-bottom">
-                                    <th class="text-primary" style="text-align: left; color : #7367f0">
-                                        Laba Kotor
-                                    </th>
-                                    <td class="text-right" style="text-align: center;color : #6e6b7b">{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-primary" style="text-align: left; color : #7367f0">
-                                        Biaya Operasional
-                                    </th>
-                                    <td class="text-right" style="text-align: center;color : #6e6b7b">{{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr class="border-top border-bottom">
-                                    <th class="text-primary" style="text-align: left; color : #7367f0">
-                                        Laba Bersih
-                                    </th>
-                                    <td class="text-right" style="text-align: center;color : #6e6b7b">{{ 'Rp. ' . number_format($laba_bersih, 0, ',', '.') }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div style="text-align: center;">
+            <h5 class="">MARKAS BESAR TNI ANGKATAN DARAT DIREKTORAT KEUANGAN</h5>
+            <!-- <hr>
+            <table>
+                <tr>
+                    <th>Nomor</th>
+                    <th>:</th>
+                    <th>B/ /VIII/2021</th>
+                </tr>
+                <tr>
+                    <th>Klasifikasi</th>
+                    <th>:</th>
+                    <th>Biasa</th>
+                </tr>
+                <tr>
+                    <th>Lampiran</th>
+                    <th>:</th>
+                    <th>Satu Bundel</th>
+                </tr>
+                <tr>
+                    <th>Perihal</th>
+                    <th>:</th>
+                    <th>Permohonan <i>Salary Crediting</i> BRI untuk Batlab TWP AD Agustus 2021</th>
+                </tr>
+            </table> -->
+            <p class="text-right">{{ date('F Y') }}</p>
+            <hr>
         </div>
+    </div>
+    <div class="border p-4">
+
+        <table cellpadding="15">
+            <tr>
+                <th>
+                    Pendapatan
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</th>
+            </tr>
+            <tr>
+                <th>
+                    Beban atas pendapatan
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($beban, 0, ',', '.') }}</th>
+            </tr>
+            <tr>
+                <th>
+                    Laba Kotor
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</th>
+            </tr>
+            <tr>
+                <th>
+                    Biaya Operasional
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</th>
+            </tr>
+            <tr>
+                <th>
+                    Laba Bersih
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($laba_bersih, 0, ',', '.') }}</th>
+            </tr>
+        </table>
     </div>
 </body>
 
