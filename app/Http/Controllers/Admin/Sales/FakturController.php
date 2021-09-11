@@ -152,7 +152,7 @@ class FakturController extends Controller
      */
     public function show($id)
     {
-        $faktur = FakturBuy::with('pengiriman_details.product', 'pelanggan')->findOrFail($id);
+        $faktur = FakturSale::with('faktur_details.product', 'pelanggan')->findOrFail($id);
 
         return view('admin.sales.faktur.show', compact('faktur'));
     }
