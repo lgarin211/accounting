@@ -19,7 +19,6 @@ class Create extends Component
         'kode' => 'required|min:4|unique:akuns',
         'name' => 'required',
         'subklasifikasi' => 'required',
-        'level' => 'required|in:Aktiva,Modal,Kewajiban,BiayaOperasional'
     ];
 
     public function kodeOtomatis()
@@ -56,7 +55,9 @@ class Create extends Component
 
     public function store()
     {
-        $data = $this->validate();
+        $data = $this->validate(array_merge($this->rules, [
+            'level' => 'required|in:' . implode(',', $this->levels)
+        ]));
 
         try {
             Akun::create($data);

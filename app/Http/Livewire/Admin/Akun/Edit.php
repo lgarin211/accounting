@@ -40,7 +40,7 @@ class Edit extends Component
         $this->validate(array_merge($this->rules, [
             'akun.name' => 'required',
             'akun.subklasifikasi' => 'required',
-            'akun.level' => 'required|in:Aktiva,Modal,Kewajiban,BiayaOperasional'
+            'akun.level' => 'required|in:' . implode(',', $this->levels)
         ]));
 
         try {
