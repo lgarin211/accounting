@@ -32,7 +32,7 @@ class Edit extends Component
 
     public function mount()
     {
-        $this->levels = ['Aktiva', 'Modal', 'Kewajiban', 'BiayaOperasional'];
+        $this->levels = Akun::getPossibleLevels();
     }
 
     public function update()

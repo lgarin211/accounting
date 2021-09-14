@@ -46,7 +46,7 @@ class Create extends Component
     public function mount()
     {
         $this->kodeOtomatis();
-        $this->levels = ['Aktiva', 'Modal', 'Kewajiban', 'BiayaOperasional'];
+        $this->levels = Akun::getPossibleLevels();
     }
 
     public function render()

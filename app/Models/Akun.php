@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Akun extends Model
 {
@@ -14,6 +15,23 @@ class Akun extends Model
     public function scopeActive($query)
     {
         return $query->where('status', '=', '1');
+    }
+
+    public function scopeFindByCode($query, $code)
+    {
+        return $query->where('kode', $code)->first();
+    }
+
+    public static function getPossibleLevels()
+    {
+        $level = DB::select(DB::raw('SHOW COLUMNS FROM akuns WHERE Field = "level"'))[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $level, $matches);
+        $values = [];
+        foreach (explode(',', $matches[1]) as $value) {
+            $values[] = trim($value, "'");
+        }
+
+        return $values;
     }
 
     public function jurnalumumdetails()
