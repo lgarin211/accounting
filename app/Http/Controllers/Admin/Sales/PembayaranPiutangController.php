@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Sales;
 
+use App\Http\Controllers\Admin\JurnalUmumController;
 use App\Http\Controllers\Controller;
 use App\Models\Akun;
+use App\Models\Divisi;
+use App\Models\Jurnalumum;
+use App\Models\Jurnalumumdetail;
 use App\Models\Sale\FakturSale;
 use App\Models\Sale\PembayaranPiutangDetailSale;
 use App\Models\Sale\PembayaranPiutangSale;
@@ -15,7 +19,7 @@ use Illuminate\Support\Facades\{DB, Validator};
 class PembayaranPiutangController extends Controller
 {
     protected $kode;
-    
+
     public function __construct()
     {
         $number = PembayaranPiutangSale::count();
@@ -34,6 +38,7 @@ class PembayaranPiutangController extends Controller
             $kode = 'CP' . "001";
         }
         $this->kode = $kode;
+        $this->ju = new JurnalUmumController();
     }
 
     /**
@@ -67,7 +72,7 @@ class PembayaranPiutangController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $rules = [
             'pelanggan_id' => 'required|exists:kontaks,id',
             'akun_id' => 'exists:akuns,id',
@@ -103,14 +108,14 @@ class PembayaranPiutangController extends Controller
                     ]);
 
                     $piutang = PiutangSale::where('faktur_id', $pembayaran['faktur_id'])->first();
-                    
+
                     $piutang->update([
                         'lunas' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'sisa' => $piutang->total_hutang - preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'status' => $piutang->total_hutang == preg_replace('/[^\d.]/', '', $pembayaran['bayar']) ? '1' : '0'
                     ]);
 
-                    
+
                     Transaction::create([
                         'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
                         'akun_id' => $request->akun_id,
@@ -130,6 +135,26 @@ class PembayaranPiutangController extends Controller
                         ]);
                     }
                 }
+
+                // Buat JURNAL ===============================
+                $divisi = Divisi::findByCode(1000); // belum tentu fix kodenya
+                $jurnal = Jurnalumum::create([
+                    'tanggal' => $request->tanggal,
+                    'kode_jurnal' => $this->ju->kode_jurnal(),
+                    'kontak_id' => $request->pelanggan_id,
+                    'divisi_id' => $divisi->id, // nginput ngasal
+                    'uraian' => 'Pembayaran Piutang', // nginput ngasal
+                ]);
+
+                // for ($i = 0; $i < 2; $i++) {
+                    Jurnalumumdetail::create([
+                        'akun_id' => $request->akun_id,
+                        'jurnalumum_id' => $jurnal->id,
+                        'debit' => preg_replace('/[^\d.]/', '', $request->total),
+                        'kredit' => 0,
+                    ]);
+                // }
+                // END Buat JURNAL ===============================
             });
 
             return redirect()->route('admin.sales.pembayaran.index')->with('success', 'Pembayaran berhasil Tersimpan');
