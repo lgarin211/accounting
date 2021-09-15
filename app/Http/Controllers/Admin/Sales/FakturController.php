@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Admin\Sales;
 
 use App\Http\Controllers\Controller;
 use App\Models\Akun;
+use App\Models\Jurnalumum;
 use App\Models\Purchase\FakturBuy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Validator};
 use App\Models\Sale\{FakturSale, FakturSaleDetail, PiutangSale};
 use App\Models\Transaction;
+use App\Http\Controllers\Admin\JurnalUmumController;
+use App\Models\Jurnalumumdetail;
 
 class FakturController extends Controller
 {
     protected $kode;
-    
+
     public function __construct()
     {
         $number = FakturSale::count();
@@ -32,6 +35,7 @@ class FakturController extends Controller
             $kode = 'PF' . "001";
         }
         $this->kode = $kode;
+        $this->ju = new JurnalUmumController();
     }
     /**
      * Display a listing of the resource.
@@ -93,7 +97,7 @@ class FakturController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $fakturs = FakturSale::create(array_merge(
-                    $request->except('fakturs', 'akun_id', 'status', 'total'),
+                    $request->except('fakturs', 'akun_id', 'akun_penjualan_id', 'status', 'total'),
                     [
                         'akun_id' => $request->akun_id ?? null,
                         'status' => !empty($request->status) && !empty($request->akun_id) ? '1' : '0',
@@ -101,16 +105,40 @@ class FakturController extends Controller
                     ]
                 ));
 
-                if(empty($request->status) && empty($request->akun_id))
-                {
-                    $akun = Akun::findOrFail(3);
+                $akun_penjualan = Akun::find($request->akun_penjualan_id); // Akun Penjualan
+                $saldo_akhir_penjualan = $akun_penjualan->saldo_awal + ($akun_penjualan->debit - $fakturs->total);
+
+                $akun_penjualan->update([
+                    'kredit' => $akun_penjualan->kredit + $fakturs->total,
+                    'saldo_akhir' => $saldo_akhir_penjualan
+                ]);
+
+                $akuns = [
+                    [
+                        'id' => $akun_penjualan->id,
+                        'debit' => 0,
+                        'kredit' => $fakturs->total,
+                    ]
+                ];
+
+                if (empty($request->status) && empty($request->akun_id)) {
+                    $akun = Akun::findByCode(11000); // Akun Piutang Usaha
+                    $saldo_akhir = $akun->saldo_awal + ($fakturs->total - $akun->kredit);
+
                     $akun->update([
-                        'kredit' => $fakturs->total
+                        'debit' => $akun->debit + $fakturs->total,
+                        'saldo_akhir' => $saldo_akhir
                     ]);
 
+                    $akuns[] = [
+                        'id' => $akun->id,
+                        'debit' => $fakturs->total,
+                        'kredit' => 0,
+                    ];
+
                     Transaction::create([
-                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
-                        'akun_id' => 3,
+                        'name' => 'Pembayaran Tidak Lunas ' . $request->tanggal,
+                        'akun_id' => $akun->id,
                         'kredit' => $fakturs->total,
                         'type' => 'Penjualan Hutang',
                     ]);
@@ -123,7 +151,48 @@ class FakturController extends Controller
                         'sisa' => $fakturs->total,
                         'status' => '0'
                     ]);
+                } else {
+                    $akun = Akun::find($request->akun_id);
+                    $saldo_akhir = $akun->saldo_awal + ($fakturs->total - $akun->kredit);
+
+                    $akun->update([
+                        'debit' => $akun->debit + $fakturs->total,
+                        'saldo_akhir' => $saldo_akhir
+                    ]);
+
+                    $akuns[] = [
+                        'id' => $akun->id,
+                        'debit' => $fakturs->total,
+                        'kredit' => 0
+                    ];
+
+                    // Masih ngide
+                    Transaction::create([
+                        'name' => 'Pembayaran Lunas ' . $request->tanggal,
+                        'akun_id' => $akun->id,
+                        'kredit' => $fakturs->total,
+                        'type' => 'Penjualan Lunas',
+                    ]);
                 }
+
+                // Buat JURNAL ===============================
+                $jurnal = Jurnalumum::create([
+                    'tanggal' => $request->tanggal,
+                    'kode_jurnal' => $this->ju->kode_jurnal(),
+                    'kontak_id' => $request->pelanggan_id,
+                    'divisi_id' => 1, // teing menang timana
+                    'uraian' => 'Penjualan blablabla', // teing menang timana
+                ]);
+
+                for ($i = 0; $i < 2; $i++) {
+                    Jurnalumumdetail::create([
+                        'akun_id' => $akuns[$i]['id'],
+                        'jurnalumum_id' => $jurnal->id,
+                        'debit' => $akuns[$i]['debit'],
+                        'kredit' => $akuns[$i]['kredit'],
+                    ]);
+                }
+                // END Buat JURNAL ===============================
 
                 foreach ($request->fakturs as $faktur) {
                     FakturSaleDetail::create([
@@ -135,7 +204,6 @@ class FakturController extends Controller
                         'total' => preg_replace('/[^\d.]/', '', $faktur['total']),
                     ]);
                 }
-
             });
 
             return redirect()->route('admin.sales.faktur.index')->with('success', 'Faktur berhasil tersimpan');
