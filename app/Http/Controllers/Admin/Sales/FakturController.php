@@ -77,6 +77,7 @@ class FakturController extends Controller
             'pesanan_id' => 'exists:pesanan_sales,id',
             'tanggal' => 'required|date|date_format:Y-m-d',
             'status' => 'sometimes',
+            'akun_penjualan_id' => 'required|exists:akuns,id',
             'fakturs.*.product_id' => 'required|exists:products,id',
             'fakturs.*.jumlah' => 'required|numeric',
             'fakturs.*.satuan' => 'required',
@@ -138,7 +139,7 @@ class FakturController extends Controller
                     ];
 
                     Transaction::create([
-                        'name' => 'Pembayaran Tidak Lunas ' . $request->tanggal,
+                        'name' => 'Pembayaran Tidak Lunas ' . date('d-M-Y'),
                         'akun_id' => $akun->id,
                         'kredit' => $fakturs->total,
                         'type' => 'Penjualan Hutang',
@@ -169,7 +170,7 @@ class FakturController extends Controller
 
                     // Masih ngide
                     Transaction::create([
-                        'name' => 'Pembayaran Lunas ' . $request->tanggal,
+                        'name' => 'Pembayaran Lunas ' . date('d-M-Y'),
                         'akun_id' => $akun->id,
                         'kredit' => $fakturs->total,
                         'type' => 'Penjualan Lunas',
