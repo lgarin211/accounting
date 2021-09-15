@@ -157,7 +157,7 @@ class PembayaranPiutangController extends Controller
                 // END Buat JURNAL ===============================
             });
 
-            return redirect()->route('admin.sales.pembayaran.index')->with('success', 'Asdas berhasil Tersimpan');
+            return redirect()->route('admin.sales.pembayaran.index')->with('success', 'Pembayaran berhasil Tersimpan');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
