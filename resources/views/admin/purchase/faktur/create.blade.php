@@ -66,6 +66,20 @@
                             </div>
                             <div class="form-group" id="akun"></div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="akun_persediaan_id">Akun Persediaan</label>
+                                <select name="akun_persediaan_id" id="akun_persediaan_id"
+                                    class="form-control select2 @error('akun_persediaan_id') is-invalid @enderror">
+                                </select>
+                                <div class="help-block with-errors"></div>
+                                @error('akun_persediaan_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -276,6 +290,7 @@
 
         $("#akun_id").select2({
             placeholder: "-- Pilih Akun --",
+            allowClear: true,
             ajax: {
                 url: '{{ route('api.select2.get-akun') }}',
                 type: 'post',
@@ -283,15 +298,8 @@
                 data: params => {
                     return {
                         _token: CSRF_TOKEN,
-                        search: params.term
-                    }
-                },
-                error: (err) => {
-                    console.log(err)
-                },
-                processResults: data => {
-                    return {
-                        results: data
+                        search: params.term || '',
+                        page: params.page || 1
                     }
                 },
                 cache: true
@@ -344,6 +352,24 @@
                 processResults: data => {
                     return {
                         results: data
+                    }
+                },
+                cache: true
+            },
+        });
+
+        $("#akun_persediaan_id").select2({
+            placeholder: "-- Pilih Akun Persediaan --",
+            allowClear: true,
+            ajax: {
+                url: '{{ route('api.select2.get-akun-persediaan') }}',
+                type: 'post',
+                dataType: 'json',
+                data: params => {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term || '',
+                        page: params.page || 1
                     }
                 },
                 cache: true

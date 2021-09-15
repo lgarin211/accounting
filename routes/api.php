@@ -65,6 +65,7 @@ Route::name('api.')->group(function () {
         //faktur
         Route::post('/get-akun/faktur', 'Api\SalesController@getAkun')->name('get-akun-faktur');
         Route::post('/get-akun-penjualan', 'Api\SalesController@getAkunPenjualan')->name('get-akun-penjualan');
+        Route::post('/get-akun-persediaan', 'Api\BuyController@getAkunPersediaan')->name('get-akun-persediaan');
     });
 
     /**

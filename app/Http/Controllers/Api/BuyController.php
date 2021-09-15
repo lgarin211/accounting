@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akun;
 use App\Models\Kontak;
 use App\Models\Product;
 use App\Models\Purchase\FakturBuy;
@@ -243,5 +244,43 @@ class BuyController extends Controller
             'data' => $details,
             'length' => $details->count()
         ]);
+    }
+
+    public function getAkunPersediaan(Request $request)
+    {
+        $search = $request->search;
+        $page = $request->page;
+        $result_count = 10;
+        $offset = ($page - 1) * $result_count;
+
+        $akuns = Akun::active()->select('id', 'name', 'kode')
+            ->where('subklasifikasi', 'Persediaan') // NGIDE
+            ->where(function ($q) use ($search) {
+                return $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('kode', 'like', "%{$search}%");
+            })
+            ->orderBy('name', 'ASC')->skip($offset)->take($result_count)->get();
+
+        $endCount = $offset + $result_count;
+        $morePages = Akun::active()->count() > $endCount;
+        $data = [];
+
+        foreach ($akuns as $akun) {
+            $data[] = [
+                "id" => $akun->id,
+                "text" => $akun->name,
+                "name" => $akun->name,
+                "kode" => $akun->kode,
+            ];
+        }
+
+        $result = [
+            'results' => $data,
+            'pagination' => [
+                'more' => $morePages
+            ]
+        ];
+
+        return $result;
     }
 }
