@@ -66,6 +66,20 @@
                             </div>
                             <div class="form-group" id="akun"></div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="akun_penjualan_id">Akun Penjualan</label>
+                                <select name="akun_penjualan_id" id="akun_penjualan_id"
+                                    class="form-control select2 @error('akun_penjualan_id') is-invalid @enderror">
+                                </select>
+                                <div class="help-block with-errors"></div>
+                                @error('akun_penjualan_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -259,6 +273,24 @@
                 cache: true
             },
         });
+        
+        $("#akun_penjualan_id").select2({
+            placeholder: "-- Pilih Akun Penjualan --",
+            allowClear: true,
+            ajax: {
+                url: '{{ route('api.select2.get-akun-penjualan') }}',
+                type: 'post',
+                dataType: 'json',
+                data: params => {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term || '',
+                        page: params.page || 1
+                    }
+                },
+                cache: true
+            },
+        });
 
         function akun() {
             $('#akun').html(`
@@ -274,22 +306,16 @@
 
             $("#akun_id").select2({
                 placeholder: "-- Pilih Akun --",
+                allowClear: true,
                 ajax: {
-                    url: '{{ route('api.select2.get-akun-faktur') }}',
+                    url: '{{ route('api.select2.get-akun') }}',
                     type: 'post',
                     dataType: 'json',
                     data: params => {
                         return {
                             _token: CSRF_TOKEN,
-                            search: params.term
-                        }
-                    },
-                    error: (err) => {
-                        console.log(err)
-                    },
-                    processResults: data => {
-                        return {
-                            results: data
+                            search: params.term || '',
+                            page: params.page || 1
                         }
                     },
                     cache: true

@@ -36,6 +36,11 @@ class JurnalUmumController extends Controller
         $this->kode = $kode;
     }
 
+    public function kode_jurnal()
+    {
+        return $this->kode;
+    }
+
     public function index()
     {
         $data = Jurnalumum::with('jurnalumumdetails')->latest();
