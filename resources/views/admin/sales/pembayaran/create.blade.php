@@ -275,7 +275,7 @@
                         <input type="text" name="pembayarans[${index}][bayar]" class="form-control bayar"  readonly>
                     </td>
                     <td>
-                        <button type="button" name="remove" 
+                        <button type="button" name="remove"
                             class="btn btn-danger btn-sm text-white btn_remove">
                             <i data-feather="trash-2"></i>
                         </button>
@@ -284,14 +284,14 @@
             `
             $("#dynamic_field").append(html)
 
-      
+
             $('[name="pembayarans['+index+'][bayar]"]').on('change', function () {
                 // const harga = $('[name="pembayarans['+index+'][jumlah]"]').val();
                 // const total = parseFloat(harga.replace(/,/g, '')) * parseInt($(this).val());
                 // $('[name="pembayarans['+index+'][total]"]').val(formatter(total));
 
                 $("#total").val(formatter(jumlahin()))
-                
+
             });
             // jurnalEachColumn(index)
             feather.replace()
@@ -325,18 +325,18 @@
 
                 $('[name="pembayarans['+index+'][bayar]"]').attr('readonly', false)
                 $('[name="pembayarans['+index+'][jumlah]"]').val(formatter(total))
-            
+
             })
 
             document.querySelectorAll('.bayar').forEach(item => {
                 item.addEventListener('keyup', function(event) {
-                    
+
                     const n = parseInt(this.value.replace(/\D/g,''),10);
                     item.value = formatter(n);
-                    
+
                     // const total = parseFloat(item.value.replace(/,/g, '')) * parseInt($('[name="pembayarans['+index+'][jumlah]"]').val());
                     // $('[name="pembayarans['+index+'][total]"]').val(formatter(total));
-    
+
                 })
             })
 
@@ -348,7 +348,7 @@
             //     $('[name="pembayarans['+index+'][bayar]"]').val(formatter(totalDua));
 
             //     $("#total").val(formatter(jumlahin()))
-                
+
             // });
 
 
