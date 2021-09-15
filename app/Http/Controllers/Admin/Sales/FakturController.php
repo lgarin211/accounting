@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\{DB, Validator};
 use App\Models\Sale\{FakturSale, FakturSaleDetail, PiutangSale};
 use App\Models\Transaction;
 use App\Http\Controllers\Admin\JurnalUmumController;
+use App\Models\Divisi;
 use App\Models\Jurnalumumdetail;
 
 class FakturController extends Controller
@@ -176,12 +177,13 @@ class FakturController extends Controller
                 }
 
                 // Buat JURNAL ===============================
+                $divisi = Divisi::findByCode(1000); // belum tentu fix kodenya
                 $jurnal = Jurnalumum::create([
                     'tanggal' => $request->tanggal,
                     'kode_jurnal' => $this->ju->kode_jurnal(),
                     'kontak_id' => $request->pelanggan_id,
-                    'divisi_id' => 1, // teing menang timana
-                    'uraian' => 'Penjualan blablabla', // teing menang timana
+                    'divisi_id' => $divisi->id, // nginput ngasal
+                    'uraian' => 'Penjualan Faktur', // nginput ngasal
                 ]);
 
                 for ($i = 0; $i < 2; $i++) {

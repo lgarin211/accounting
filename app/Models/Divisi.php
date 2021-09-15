@@ -20,4 +20,9 @@ class Divisi extends Model
     {
         return $this->hasMany(Jurnalumum::class);
     }
+
+    public function scopeFindByCode($query, $code)
+    {
+        return $query->where('kode', $code)->first();
+    }
 }
