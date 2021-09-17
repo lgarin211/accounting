@@ -1,13 +1,13 @@
 @extends('_layouts.main')
-@section('title', 'Penjualan')
+@section('title', 'Pembelian')
 @push('breadcrumb')
 <li class="breadcrumb-item">
-    <a href="{{ route('admin.sales.') }}">Penjualan</a>
+    <a href="{{ route('admin.purchase.') }}">Pembelian</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{{ route('admin.sales.pembayaran.index') }}">Pembayaran Piutang</a>
+    <a href="{{ route('admin.purchase.pembayaran.index') }}">Pembayaran Utang</a>
 </li>
-<li class="breadcrumb-item" aria-current="page">Tambah Pembayaran Piutang</li>
+<li class="breadcrumb-item" aria-current="page">Tambah Pembayaran Utang</li>
 @endpush
 @section('content')
 <div class="row">
