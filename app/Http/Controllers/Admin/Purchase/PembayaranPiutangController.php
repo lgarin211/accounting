@@ -48,7 +48,7 @@ class PembayaranPiutangController extends Controller
      */
     public function index()
     {
-        $pembayarans =  PembayaranPiutangBuy::select('id', 'tanggal', 'kode', 'pelanggan_id', 'total')->with('pemasok')->paginate(10);
+        $pembayarans =  PembayaranPiutangBuy::select('id', 'tanggal', 'kode', 'pemasok_id', 'total')->with('pemasok')->paginate(10);
         return view('admin.purchase.pembayaran.index', compact('pembayarans'));
     }
 
@@ -115,7 +115,7 @@ class PembayaranPiutangController extends Controller
                     ]);
 
                     Transaction::create([
-                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'name' => 'Pembayaran Tidak Lunas ' . date('d-M-Y'),
                         'akun_id' => $request->akun_id,
                         'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'type' => 'Pembelian Lunas',
@@ -127,12 +127,11 @@ class PembayaranPiutangController extends Controller
                     ]);
 
 
-                    if($piutang->status == 1){
+                    if ($piutang->status == 1) {
                         $faktur = FakturBuy::findOrFail($pembayaran['faktur_id']);
                         $faktur->update([
                             'status' => '1'
                         ]);
-
                     }
                 }
 

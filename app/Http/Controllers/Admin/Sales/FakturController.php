@@ -115,13 +115,11 @@ class FakturController extends Controller
                     'saldo_akhir' => $saldo_akhir_penjualan
                 ]);
 
-                $akuns = [
-                    [
-                        'id' => $akun_penjualan->id,
-                        'debit' => 0,
-                        'kredit' => $fakturs->total,
-                    ]
-                ];
+                $akuns = [[
+                    'id' => $akun_penjualan->id,
+                    'debit' => 0,
+                    'kredit' => $fakturs->total,
+                ]];
 
                 if (empty($request->status) && empty($request->akun_id)) {
                     $akun = Akun::findByCode(11000); // Akun Piutang Usaha
@@ -132,11 +130,11 @@ class FakturController extends Controller
                         'saldo_akhir' => $saldo_akhir
                     ]);
 
-                    $akuns[] = [
+                    array_unshift($akuns, [
                         'id' => $akun->id,
                         'debit' => $fakturs->total,
                         'kredit' => 0,
-                    ];
+                    ]);
 
                     Transaction::create([
                         'name' => 'Pembayaran Tidak Lunas ' . date('d-M-Y'),
@@ -162,13 +160,12 @@ class FakturController extends Controller
                         'saldo_akhir' => $saldo_akhir
                     ]);
 
-                    $akuns[] = [
+                    array_unshift($akuns, [
                         'id' => $akun->id,
                         'debit' => $fakturs->total,
                         'kredit' => 0
-                    ];
+                    ]);
 
-                    // Masih ngide
                     Transaction::create([
                         'name' => 'Pembayaran Lunas ' . date('d-M-Y'),
                         'akun_id' => $akun->id,
@@ -183,8 +180,8 @@ class FakturController extends Controller
                     'tanggal' => $request->tanggal,
                     'kode_jurnal' => $this->ju->kode_jurnal(),
                     'kontak_id' => $request->pelanggan_id,
-                    'divisi_id' => $divisi->id, // nginput ngasal
-                    'uraian' => 'Penjualan Faktur', // nginput ngasal
+                    'divisi_id' => $divisi->id,
+                    'uraian' => "Piutang {$fakturs->pelanggan->nama}",
                 ]);
 
                 for ($i = 0; $i < 2; $i++) {
