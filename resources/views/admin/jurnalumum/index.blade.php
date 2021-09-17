@@ -41,13 +41,7 @@
                                         <td>{{ $loop->iteration + $data->firstItem() - 1 }}</td>
                                         <td>{{ $key->tanggal }}</td>
                                         <td>{{ $key->kode_jurnal }}</td>
-                                        <td>
-                                            {{-- @if($key->uraian == 'Pembayaran Piutang' || $key->uraian == 'Pembayaran Hutang' || $key->uraian == 'Pembayaran Utang' || $key->uraian == 'Penjualan Faktur') --}}
-                                                {{ $key->uraian . " " . $key->jurnalumumdetails[0]->akun->name }}
-                                            {{-- @else
-                                                {{ $key->uraian }}
-                                            @endif --}}
-                                        </td>
+                                        <td>{{ $key->uraian }}</td>
                                         <td>
                                             @php
                                                 $debit = 0;
