@@ -31,7 +31,6 @@
                                     <th>NO. REFERENSI</th>
                                     <th>URAIAN</th>
                                     <th>NILAI</th>
-                                    <th style="width: 1px">STATUS</th>
                                     <th style="width: 1px">ACTION</th>
                                 </tr>
                             </thead>
@@ -51,7 +50,6 @@
                                             @endphp
                                             {{ 'IDR ' . number_format($debit, 0, ',', '.') }}
                                         </td>
-                                        <td>{!! $key->StatusType !!}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
