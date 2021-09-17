@@ -179,8 +179,8 @@ class FakturBuyController extends Controller
                     'tanggal' => $request->tanggal,
                     'kode_jurnal' => $this->ju->kode_jurnal(),
                     'kontak_id' => $request->pemasok_id,
-                    'divisi_id' => $divisi->id, // nginput ngasal
-                    'uraian' => 'Pembelian Faktur', // nginput ngasal
+                    'divisi_id' => $divisi->id,
+                    'uraian' => "Hutang {$fakturs->pemasok->nama}",
                 ]);
 
                 for ($i = 0; $i < 2; $i++) {
