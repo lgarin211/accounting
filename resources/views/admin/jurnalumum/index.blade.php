@@ -41,7 +41,13 @@
                                         <td>{{ $loop->iteration + $data->firstItem() - 1 }}</td>
                                         <td>{{ $key->tanggal }}</td>
                                         <td>{{ $key->kode_jurnal }}</td>
-                                        <td>{{ $key->uraian }}</td>
+                                        <td>
+                                            {{-- @if($key->uraian == 'Pembayaran Piutang' || $key->uraian == 'Pembayaran Hutang' || $key->uraian == 'Pembayaran Utang' || $key->uraian == 'Penjualan Faktur') --}}
+                                                {{ $key->uraian . " " . $key->jurnalumumdetails[0]->akun->name }}
+                                            {{-- @else
+                                                {{ $key->uraian }}
+                                            @endif --}}
+                                        </td>
                                         <td>
                                             @php
                                                 $debit = 0;
@@ -67,7 +73,7 @@
                                                         <i data-feather="eye"></i>
                                                         <span class="ml-1">Show</span>
                                                     </a>
-                                                    <a href="javascript:void('delete')" class="dropdown-item text-danger" 
+                                                    <a href="javascript:void('delete')" class="dropdown-item text-danger"
                                                         onclick="deleteConfirm('form-delete', '{{ $key->id }}')">
                                                         <i data-feather="trash"></i>
                                                         <span class="ml-1">Delete</span>
