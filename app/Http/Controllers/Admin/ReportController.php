@@ -167,7 +167,7 @@ class ReportController extends Controller
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
 
-            $BKK_AkunBO = Bkk::whereBetween('created_at', [$start, $end])->whereHas('akun', function ($query) {
+            $BKK_AkunBO = Bkk::whereBetween('created_at', [$start, $end])->where('status','BKK')->whereHas('akun', function ($query) {
                 $query->where('level', 'BiayaOperasional');
             })->sum('value');
 
@@ -182,7 +182,7 @@ class ReportController extends Controller
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
 
-            $BKK_AkunBO = Bkk::whereHas('akun', function ($query) {
+            $BKK_AkunBO = Bkk::where('status','BKK')->whereHas('akun', function ($query) {
                 $query->where('level', 'BiayaOperasional');
             })->sum('value');
 

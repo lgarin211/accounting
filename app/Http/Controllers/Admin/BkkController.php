@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Bkk, BkkDetail,Akun,Transaction};
+use App\Models\{Bkk, BkkDetail,Akun,Transaction,Labarugi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -88,7 +88,17 @@ class BkkController extends Controller
                     DB::table('akuns')->where('id',$detail['rekening'])->update([
                         'debit'=> DB::raw('debit + '.$jumlah_uang) 
                     ]);
+                    // Laporan Neraca
                     Transaction::create([
+                        'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
+                        'akun_id' => $detail['rekening'],
+                        'debit' => $jumlah_uang,
+                        'kredit' => 0,
+                        'type' => 'Buku Kas Keluar'
+                    ]);
+                    //laporan Laba Rugi
+                    Labarugi::create([
+                        'tanggal' => $request['tanggal'],
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
                         'debit' => $jumlah_uang,
@@ -107,7 +117,17 @@ class BkkController extends Controller
                 DB::table('akuns')->where('id',$request['rekening_id'])->update([
                     'kredit'=> DB::raw('kredit + '.$totalUang) 
                 ]);
+                //laporan Neraca
                 Transaction::create([
+                    'name' => $request['desk'] . ' ' . date('d-M-Y'),
+                    'akun_id' => $request['rekening_id'],
+                    'debit' => 0,
+                    'kredit' => $totalUang,
+                    'type' => 'Buku Kas Keluar'
+                ]);
+                //laporan Laba Rugi
+                Labarugi::create([
+                    'tanggal' => $request['tanggal'],
                     'name' => $request['desk'] . ' ' . date('d-M-Y'),
                     'akun_id' => $request['rekening_id'],
                     'debit' => 0,
