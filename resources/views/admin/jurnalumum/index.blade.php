@@ -65,7 +65,7 @@
                                                         <i data-feather="eye"></i>
                                                         <span class="ml-1">Show</span>
                                                     </a>
-                                                    <a href="javascript:void('delete')" class="dropdown-item text-danger" 
+                                                    <a href="javascript:void('delete')" class="dropdown-item text-danger"
                                                         onclick="deleteConfirm('form-delete', '{{ $key->id }}')">
                                                         <i data-feather="trash"></i>
                                                         <span class="ml-1">Delete</span>
