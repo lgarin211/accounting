@@ -32,8 +32,9 @@
                             @if ($akun != NULL)
                             @foreach($akun as $row)
                             <br>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between p-2">
                                 <h3>{{ $row->name }} - {{ $row->id }}</h3>
+                                <a href="{{ route('admin.bukubesar.excel.export', $row->id) }}" class="btn btn-success">Export</a>
                                 <h3>{{ $row->subklasifikasi }}</h3>
                             </div>
                             <div class="table-responsive">
@@ -89,11 +90,11 @@
                                                             <td>BKK</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>{{$black->jml_uang}}</td> 
-                                                            <td>-</td> 
-                                                            <td></td> 
+                                                            <td>{{$black->jml_uang}}</td>
+                                                            <td>-</td>
+                                                            <td></td>
                                                             @php $asik = $black->uang; @endphp
-                                                        </tr>      
+                                                        </tr>
                                                     @endforeach
                                                     <tr>
                                                         <td></td>
@@ -129,11 +130,11 @@
                                                             <td>BKM</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>-</td> 
-                                                            <td>{{$black->jml_uang}}</td> 
+                                                            <td>-</td>
+                                                            <td>{{$black->jml_uang}}</td>
                                                             <td></td>
                                                             @php $asik = $black->uang; @endphp
-                                                        </tr>      
+                                                        </tr>
                                                     @endforeach
                                                     <tr>
                                                         <td></td>
@@ -143,7 +144,7 @@
                                                         <td>{{$item->value}}</td>
                                                         <td>-</td>
                                                         <td></td>
-                                                    </tr> 
+                                                    </tr>
                                                 @endif
                                             @endforeach
                                         <tr class="bg-primary text-light">
