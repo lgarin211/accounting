@@ -32,7 +32,7 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <th class="text-primary">
                                         Beban atas pendapatan
                                     </th>
@@ -43,8 +43,8 @@
                                         Laba Kotor
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                <tr>        
                                     <th class="text-primary">
                                         Biaya Operasional
                                     </th>

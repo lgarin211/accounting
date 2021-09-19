@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Bkk, BkkDetail,Transaction};
+use App\Models\{Bkk, BkkDetail,Transaction,Labarugi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -85,7 +85,17 @@ class BkmController extends Controller
                     DB::table('akuns')->where('id',$detail['rekening'])->update([
                         'kredit'=> DB::raw('kredit + '.$jumlah_uang) 
                     ]);
+                    //Report Neraca
                     Transaction::create([
+                        'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
+                        'akun_id' => $detail['rekening'],
+                        'Kredit' => $jumlah_uang,
+                        'debit' => 0,
+                        'type' => 'Buku Kas Masuk'
+                    ]);
+                    // Report LabaRugi
+                    Labarugi::create([
+                        'tanggal' => $request['tanggal'],
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
                         'Kredit' => $jumlah_uang,
@@ -107,6 +117,15 @@ class BkmController extends Controller
                     'kredit' => 0,
                     'debit' => $totalUang,
                     'type' => 'Buku Kas Masuk'
+                ]);
+                //laporan Laba Rugi
+                Labarugi::create([
+                    'tanggal' => $request['tanggal'],
+                    'name' => $request['desk'] . ' ' . date('d-M-Y'),
+                    'akun_id' => $request['rekening_id'],
+                    'debit' => $totalUang,
+                    'kredit' => 0,
+                    'type' => 'Buku Kas Keluar'
                 ]);
                 DB::table('akuns')->where('id',$request['rekening_id'])->update([
                     'debit'=> DB::raw('debit + '.$totalUang) 
