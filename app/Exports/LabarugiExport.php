@@ -11,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Illuminate\Support\Facades\DB;
 
 class LabarugiExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
@@ -27,19 +28,27 @@ class LabarugiExport implements FromCollection, WithHeadings, WithStyles, Should
             $query->where('level', 'BiayaOperasional');
         })->sum('debit');
 
-        $BKK_AkunBO = Bkk::whereHas('akun', function ($query) {
-            $query->where('level', 'BiayaOperasional');
-        })->sum('value');
+        $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','BiayaOperasional')
+                                                ->where('bkks.status','BKK')
+                                                ->select('jml_uang')
+                                                ->sum('jml_uang');
+
+        $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','PendapatanLain')
+                                                ->select('jml_uang')
+                                                ->sum('jml_uang');
 
         $BiayaOperasional = $JU_AkunBO + $BKK_AkunBO;
         $laba_bersih = $laba_kotor - $BiayaOperasional;
         $arra = [
             [
                 strval($pendapatan),
-                strval($laba_kotor),
-                strval($laba_bersih),
-                strval($beban),
-                strval($BiayaOperasional)
+                strval($BKM_PendapatLain),
+                strval($BiayaOperasional),
+                strval($laba_bersih)
             ]
         ];
         $data = collect($arra);
@@ -51,8 +60,9 @@ class LabarugiExport implements FromCollection, WithHeadings, WithStyles, Should
         return [
             [
                 'Pendapatan',
-                'Beban atas pendapatan',
-                'Laba Kotor',
+                'Pendapatan Lain',
+                // 'Beban atas pendapatan',
+                // 'Laba Kotor',
                 'Biaya Operasional',
                 'Laba Bersih'
             ]
