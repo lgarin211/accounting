@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\LabarugiExport;
 use App\Exports\NeracaExport;
 use App\Http\Controllers\Controller;
-use App\Models\{Akun, Jurnalumumdetail, Bkk};
+use App\Models\{Akun, Jurnalumumdetail, Bkk, BkkDetail};
 use App\Models\Purchase\FakturBuy;
 use App\Models\Sale\FakturSale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+
 use PDF;
 
 class ReportController extends Controller
@@ -181,10 +183,20 @@ class ReportController extends Controller
             $JU_AkunBO = Jurnalumumdetail::whereHas('akun', function ($query) {
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
+            
+            $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','BiayaOperasional')
+                                                ->where('bkks.status','BKK')
+                                                ->select('jml_uang')
+                                                ->sum('jml_uang');
 
-            $BKK_AkunBO = Bkk::where('status','BKK')->whereHas('akun', function ($query) {
-                $query->where('level', 'BiayaOperasional');
-            })->sum('value');
+            $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','PendapatanLain')
+                                                ->where('bkks.status','BKM')
+                                                ->select('jml_uang')
+                                                ->sum('jml_uang');
 
             $BiayaOperasional = $JU_AkunBO + $BKK_AkunBO;
             $laba_bersih = $laba_kotor - $BiayaOperasional;
@@ -195,7 +207,8 @@ class ReportController extends Controller
             'laba_kotor' => $laba_kotor,
             'laba_bersih' => $laba_bersih,
             'beban' => $beban,
-            'BiayaOperasional' => $BiayaOperasional
+            'BiayaOperasional' => $BiayaOperasional,
+            'PendapatanLain' => $BKM_PendapatLain
         ]);
     }
 
