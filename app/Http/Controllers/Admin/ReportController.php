@@ -203,7 +203,8 @@ class ReportController extends Controller
     {
         return view('report.bukubesar.index', [
             'kontak' => Akun::get(),
-            'akun' => Akun::get()
+            'akun' => Akun::get(),
+            'rowsCount' => Bkk::orderBy('id', 'DESC')->get()->count()
         ]);
     }
     public function bukubesarcari(Request $request)
