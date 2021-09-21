@@ -38,6 +38,7 @@ class LabarugiExport implements FromCollection, WithHeadings, WithStyles, Should
         $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                                                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
                                                 ->where('akuns.level','PendapatanLain')
+                                                ->where('bkks.status','BKM')
                                                 ->select('jml_uang')
                                                 ->sum('jml_uang');
 
