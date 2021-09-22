@@ -52,6 +52,13 @@
             </tr>
             <tr>
                 <th>
+                    Pendapatan Lain
+                </th>
+                <th>:</th>
+                <th>{{ 'Rp. ' . number_format($PendapatanLain, 0, ',', '.') }}</th>
+            </tr>
+            {{-- <tr>
+                <th>
                     Beban atas pendapatan
                 </th>
                 <th>:</th>
@@ -63,7 +70,7 @@
                 </th>
                 <th>:</th>
                 <th>{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</th>
-            </tr>
+            </tr> --}}
             <tr>
                 <th>
                     Biaya Operasional

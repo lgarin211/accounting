@@ -32,6 +32,12 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</td>
                                 </tr>
+                                <tr>
+                                    <th class="text-primary">
+                                        Pendapatan Lain
+                                    </th>
+                                    <td class="text-right">{{ 'Rp. ' . number_format($PendapatanLain, 0, ',', '.') }}</td>
+                                </tr>
                                 {{-- <tr>
                                     <th class="text-primary">
                                         Beban atas pendapatan
