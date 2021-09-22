@@ -228,10 +228,12 @@ class ReportController extends Controller
             })->get();
         }
         return view('report.bukubesar.index', [
+            'selected' => $kontak,
             'kontak' => Akun::get(),
             'akun' => $akun,
             'startDate' => $from,
-            'endDate' => $to
+            'endDate' => $to,
+            'rowsCount' => Bkk::orderBy('id', 'DESC')->get()->count()
         ]);
     }
 
