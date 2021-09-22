@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
             Route::resource('rekening', 'RekeningController')->except(['store', 'update', 'destroy']);
             // Bank
             // Route::resource('bank', 'BankController');
+            // Kelompok Aktiva untuk Asset
+            Route::view('kelompok-aktiva', 'admin.asset.kelompok_aktiva')->name('kelompok-index');
+            // Asset
+            Route::resource('asset', 'AssetController');
         });
 
         Route::prefix('ledger')->group(function () {
