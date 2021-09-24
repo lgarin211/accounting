@@ -36,10 +36,14 @@ class Login extends Component
         $credentials = $this->validate($this->rules, $customMessages, $data);
         $remember = !empty($this->remember);
 
-        if ($auth->login($credentials, $remember)) {
-            return redirect()->route($this->redirects);
-        } else {
-            session()->flash('error', 'Your password is incorrect.');
+        try {
+            if ($auth->login($credentials, $remember)) {
+                return redirect()->route($this->redirects);
+            } else {
+                session()->flash('error', 'Your password is incorrect.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
         }
     }
 }
