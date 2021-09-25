@@ -44,7 +44,7 @@
                                             <th>Tanggal</th>
                                             <th>Tipe</th>
                                             <th>No.Ref</th>
-                                            <th>Kontak</th>
+                                            <th>Uraian</th>
                                             <th>Debit</th>
                                             <th>Kredit</th>
                                             <th>Saldo</th>
@@ -60,7 +60,7 @@
                                             <td>{{ $data->jurnalumum->tanggal }}</td>
                                             <td>Jurnal Umum</td>
                                             <td>{{ $data->jurnalumum->kode_jurnal }}</td>
-                                            <td>{{ $data->jurnalumum->kontak->nama }}</td>
+                                            <td>{{ $data->jurnalumum->uraian }}</td>
                                             <td>{{ $data->debit }}</td>
                                             <td colspan="2">{{ $data->kredit }}</td>
                                         </tr>
