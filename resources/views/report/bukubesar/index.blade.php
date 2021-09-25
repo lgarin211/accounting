@@ -133,6 +133,9 @@
                                     @endif
                                 @endif
                                                 <td>{{ $data->desk }}</td>
+                                                @if ($data->status == "BKK")
+                                                <td></td>
+                                                @endif
                                                 <td colspan="3">{{ $data->value }}</td>
                             </tr>
                             @endforeach
