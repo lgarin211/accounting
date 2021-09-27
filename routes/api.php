@@ -101,4 +101,5 @@ Route::name('api.')->group(function () {
         Route::get('/{id}', 'Api\TemplateJurnalController@selected')->name('selected');
         Route::post('datatables', 'Api\TemplateJurnalController@getTemplateDatatables')->name('datatables');
     });
+    Route::get('/asset/kelompok/{id}', 'Api\AssetController@AssetKelompok');
 });
