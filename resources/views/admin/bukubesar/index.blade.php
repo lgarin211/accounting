@@ -90,8 +90,8 @@
                                                             <td>BKK</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>{{$black->jml_uang}}</td>
                                                             <td>-</td>
+                                                            <td>{{$black->jml_uang}}</td>
                                                             <td></td>
                                                             @php $asik = $black->uang; @endphp
                                                         </tr>
@@ -101,8 +101,8 @@
                                                         <td>BKK</td>
                                                         <td>-</td>
                                                         <td>{{$item->akun->name}}</td>
-                                                        <td>-</td>
                                                         <td>{{$item->value}}</td>
+                                                        <td>-</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif
@@ -130,8 +130,8 @@
                                                             <td>BKM</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>-</td>
                                                             <td>{{$black->jml_uang}}</td>
+                                                            <td>-</td>
                                                             <td></td>
                                                             @php $asik = $black->uang; @endphp
                                                         </tr>
@@ -141,8 +141,8 @@
                                                         <td>BKM</td>
                                                         <td>-</td>
                                                         <td>{{$item->akun->name}}</td>
-                                                        <td>{{$item->value}}</td>
                                                         <td>-</td>
+                                                        <td>{{$item->value}}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif

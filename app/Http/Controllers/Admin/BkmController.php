@@ -83,14 +83,14 @@ class BkmController extends Controller
                 foreach ($request->bkm as $detail) {
                     $jumlah_uang = (int)preg_replace('/[^\d.]/', '', $detail['jumlah']);
                     DB::table('akuns')->where('id',$detail['rekening'])->update([
-                        'kredit'=> DB::raw('kredit + '.$jumlah_uang) 
+                        'debit'=> DB::raw('debit + '.$jumlah_uang) 
                     ]);
                     //Report Neraca
                     Transaction::create([
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
-                        'Kredit' => $jumlah_uang,
-                        'debit' => 0,
+                        'debit' => $jumlah_uang,
+                        'kredit' => 0,
                         'type' => 'Buku Kas Masuk'
                     ]);
                     // Report LabaRugi
@@ -98,8 +98,8 @@ class BkmController extends Controller
                         'tanggal' => $request['tanggal'],
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
-                        'Kredit' => $jumlah_uang,
-                        'debit' => 0,
+                        'debit' => $jumlah_uang,
+                        'kredit' => 0,
                         'type' => 'Buku Kas Masuk'
                     ]);
                     BkkDetail::create([
@@ -114,8 +114,8 @@ class BkmController extends Controller
                 Transaction::create([
                     'name' => $request['desk'] . ' ' . date('d-M-Y'),
                     'akun_id' => $request['rekening_id'],
-                    'kredit' => 0,
-                    'debit' => $totalUang,
+                    'debit' => 0,
+                    'kredit' => $totalUang,
                     'type' => 'Buku Kas Masuk'
                 ]);
                 //laporan Laba Rugi
@@ -123,12 +123,12 @@ class BkmController extends Controller
                     'tanggal' => $request['tanggal'],
                     'name' => $request['desk'] . ' ' . date('d-M-Y'),
                     'akun_id' => $request['rekening_id'],
-                    'debit' => $totalUang,
-                    'kredit' => 0,
+                    'kredit' => $totalUang,
+                    'debit' => 0,
                     'type' => 'Buku Kas Keluar'
                 ]);
                 DB::table('akuns')->where('id',$request['rekening_id'])->update([
-                    'debit'=> DB::raw('debit + '.$totalUang) 
+                    'kredit'=> DB::raw('kredit + '.$totalUang) 
                 ]);
                 $bkm->update(['value' => $totalUang]);
             });
