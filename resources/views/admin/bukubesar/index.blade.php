@@ -44,7 +44,7 @@
                                             <th>Tanggal</th>
                                             <th>Tipe</th>
                                             <th>No.Ref</th>
-                                            <th>Kontak</th>
+                                            <th>Uraian</th>
                                             <th>Debit</th>
                                             <th>Kredit</th>
                                             <th>Saldo</th>
@@ -60,7 +60,7 @@
                                             <td>{{ $data->jurnalumum->tanggal }}</td>
                                             <td>Jurnal Umum</td>
                                             <td>{{ $data->jurnalumum->kode_jurnal }}</td>
-                                            <td>{{ $data->jurnalumum->kontak->nama }}</td>
+                                            <td>{{ $data->jurnalumum->uraian }}</td>
                                             <td>{{ $data->debit }}</td>
                                             <td colspan="2">{{ $data->kredit }}</td>
                                         </tr>
@@ -90,8 +90,8 @@
                                                             <td>BKK</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>{{$black->jml_uang}}</td>
                                                             <td>-</td>
+                                                            <td>{{$black->jml_uang}}</td>
                                                             <td></td>
                                                             @php $asik = $black->uang; @endphp
                                                         </tr>
@@ -101,8 +101,8 @@
                                                         <td>BKK</td>
                                                         <td>-</td>
                                                         <td>{{$item->akun->name}}</td>
-                                                        <td>-</td>
                                                         <td>{{$item->value}}</td>
+                                                        <td>-</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif
@@ -130,8 +130,8 @@
                                                             <td>BKM</td>
                                                             <td>-</td>
                                                             <td>{{$black->rekening->name }}</td>
-                                                            <td>-</td>
                                                             <td>{{$black->jml_uang}}</td>
+                                                            <td>-</td>
                                                             <td></td>
                                                             @php $asik = $black->uang; @endphp
                                                         </tr>
@@ -141,8 +141,8 @@
                                                         <td>BKM</td>
                                                         <td>-</td>
                                                         <td>{{$item->akun->name}}</td>
-                                                        <td>{{$item->value}}</td>
                                                         <td>-</td>
+                                                        <td>{{$item->value}}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif

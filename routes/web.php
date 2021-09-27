@@ -56,9 +56,10 @@ Route::middleware('auth')->group(function () {
             Route::resource('rekening', 'RekeningController')->except(['store', 'update', 'destroy']);
             // Bank
             // Route::resource('bank', 'BankController');
-
             // Kelompok Aktiva untuk Asset
             Route::view('kelompok-aktiva', 'admin.asset.kelompok_aktiva')->name('kelompok-index');
+            // Asset
+            Route::resource('asset', 'AssetController');
         });
 
         Route::prefix('ledger')->group(function () {
@@ -68,7 +69,8 @@ Route::middleware('auth')->group(function () {
             Route::prefix('bukubesar')->name('bukubesar.')->group(function () {
                 Route::get('/', 'BukuBesarController@index')->name('index');
                 Route::post('/cari-akun', 'BukuBesarController@cariakun')->name('cariakun');
-                Route::get('/excel/export/{id}', 'BukuBesarController@excelexport')->name('excel.export');
+                Route::get('/excel/export/{id}' ,'BukuBesarController@excelexport')->name('excel.export');
+                Route::post('/laporan/excel/export', 'BukuBesarController@LaporanExcelExport')->name('laporan.excel.export');
             });
             // Jurnal Umum
             Route::resource('jurnalumum', 'JurnalUmumController');
@@ -124,7 +126,7 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('report')->name('report.')->group(function () {
             // menu report
-            Route::get('/', function () {
+            Route::get('/', function(){
                 return redirect()->route('admin.report.keuangan.menu');
             })->name('menu');
             Route::name('keuangan.')->prefix('keuangan')->group(function () {
