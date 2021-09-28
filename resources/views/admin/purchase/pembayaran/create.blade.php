@@ -202,25 +202,20 @@
         $("#akun_id").select2({
             placeholder: "-- Pilih Akun --",
             ajax: {
-                url: '{{ route('api.select2.get-akun-faktur') }}',
+                url: '{{ route('api.select2.get-akun') }}',
                 type: 'post',
                 dataType: 'json',
                 data: params => {
                     return {
                         _token: CSRF_TOKEN,
-                        search: params.term
-                    }
-                },
-                error: (err) => {
-                    console.log(err)
-                },
-                processResults: data => {
-                    return {
-                        results: data
+                        search: params.term || '',
+                        page: params.page || 1,
+                        kas_bank: 'yes',
                     }
                 },
                 cache: true
             },
+            allowClear: true
         });
     });
 
