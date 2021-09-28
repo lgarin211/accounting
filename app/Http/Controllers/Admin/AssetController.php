@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Asset;
+use App\Models\Asset\KelompokAktiva;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -24,7 +26,10 @@ class AssetController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.asset.create',[
+            'asset' => new Asset(),
+            'kelompok' => KelompokAktiva::get()
+        ]);
     }
 
     /**
