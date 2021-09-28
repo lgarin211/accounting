@@ -113,16 +113,20 @@ class AssetController extends Controller
         $bulan = Carbon::parse($request->date)->format('m');
         $hasil = $request->umur_ekonomis * 12;
         $total = $hasil - $bulan;
-        for ($i = 1; $i <= $total; $i++) {
-            $collection->push([
-                'tanggal' => Carbon::now()->lastOfMonth()->format(''),
+        $request->harga_beli = str_replace(',','',$request->harga_beli);
+        $request->beban_bulan = str_replace(',','',$request->beban_bulan);
+        $request->nilai_buku = str_replace(',','',$request->nilai_buku);
+        // dd($request->nilai_buku ,$request->beban_bulan);
+        for ($i = 0; $i <= $total; $i++) {
+            $collection->push((object)[
+                'tanggal' => Carbon::parse($request->date)->addMonths($i)->endOfMonth()->format('Y-m-d'),
                 'akumulasi_penyusutan' => 'asd',
-                'penyusutan_bulanan' => 'asd',
-                'nilai_buku' => 'asd'
+                'penyusutan_bulanan' => $request->beban_bulan,
+                'nilai_buku' => $request->harga_beli -= $request->beban_bulan
             ]);
         }
         $carbon = Carbon::parse($attr['date'])->addYear($attr['umur_ekonomis'])->format('Y-m-d');
-        dd($carbon, $request->umur_ekonomis, $collection);
+        // dd($carbon, $request->umur_ekonomis, $collection);
         $attr['harga_beli'] = str_replace(',', '', $request->harga_beli);
         $attr['nilai_residu'] = str_replace(',', '', $request->nilai_residu);
         $attr['akumulasi_beban'] = str_replace(',', '', $request->akumulasi_beban);
@@ -130,7 +134,8 @@ class AssetController extends Controller
         $attr['nilai_buku'] = str_replace(',', '', $request->nilai_buku);
         $attr['beban_bulan'] = str_replace(',', '', $request->beban_bulan);
         return view('admin.asset.print', [
-            'attr' => $attr
+            'attr' => $attr,
+            'collection' => $collection
         ]);
     }
 }

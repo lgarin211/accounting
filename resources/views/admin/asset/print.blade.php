@@ -89,17 +89,17 @@
                             <tr>
                                 <th>terhitung_tanggal</th>
                                 <th>:</th>
-                                <th>{{ $attr['terhitung_tanggal'] }}</th>
+                                <th id="terhitung_tanggal">{{ $attr['terhitung_tanggal'] }}</th>
                             </tr>
                             <tr>
                                 <th>nilai_buku</th>
                                 <th>:</th>
-                                <th>{{ number_format($attr['nilai_buku']) }}</th>
+                                <th id="nilai_buku">{{ number_format($attr['nilai_buku']) }}</th>
                             </tr>
                             <tr>
                                 <th>beban_bulan</th>
                                 <th>:</th>
-                                <th>{{ number_format($attr['beban_bulan']) }}</th>
+                                <th id="beban_bulan">{{ number_format($attr['beban_bulan']) }}</th>
                             </tr>
                         </table>
                     </div>
@@ -122,13 +122,22 @@
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
-                            <th>Tanggal</th>
-                            <th>Akumulasi Penyusutan</th>
-                            <th>Penyusutan Bulanan</th>
-                            <th>Nilai Buku</th>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Akumulasi Penyusutan</th>
+                                <th>Penyusutan Bulanan</th>
+                                <th>Nilai Buku</th>
+                            </tr>
                         </thead>
                         <tbody>
-
+                            @foreach($collection as $data)
+                            <tr onclick="ClickTheRow(this)">
+                                <td class="text-center">{{ $data->tanggal }}</td>
+                                <td>{{ $data->akumulasi_penyusutan }}</td>
+                                <td class="text-right">{{ number_format($data->penyusutan_bulanan) }}</td>
+                                <td class="text-right">{{ number_format($data->nilai_buku) }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -142,6 +151,13 @@
 @stop
 @push('script')
 <script>
+    function ClickTheRow(row)
+    {
+        console.log($(row).children()[3])
+        let beban_bulan = $($(row).children()[2])[0].innerHTML
+        let nilai_buku = $(row)
+        $('#beban_bulan').html(beban_bulan)
+    }
     const formatter = function(num) {
         var str = num.toString().replace("", ""),
             parts = false,
