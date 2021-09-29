@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
             Route::view('kelompok-aktiva', 'admin.asset.kelompok_aktiva')->name('kelompok-index');
             // Asset
             Route::resource('asset', 'AssetController');
+            Route::post('/asset/print', 'AssetController@print')->name('asset.print');
         });
 
         Route::prefix('ledger')->group(function () {

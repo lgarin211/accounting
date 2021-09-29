@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Asset;
+use App\Models\Asset\KelompokAktiva;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class AssetController extends Controller
 {
@@ -24,7 +28,10 @@ class AssetController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.asset.create', [
+            'asset' => new Asset(),
+            'kelompok' => KelompokAktiva::get()
+        ]);
     }
 
     /**
@@ -81,5 +88,54 @@ class AssetController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function print(Request $request)
+    {
+        $this->validate($request, [
+            "nama" => 'required',
+            "kelompok" => "required",
+            "date" => 'required',
+            "harga_beli" => 'required',
+            "nilai_residu" => 'required',
+            "umur_ekonomis" => 'required',
+            "lokasi" => 'required',
+            "metode" => 'required',
+            "nomor_aktiva" => 'required',
+            "departemen" => "required",
+            "akumulasi_beban" => 'required',
+            "beban_tahun" => 'required',
+            "terhitung_tanggal" => 'required',
+            "nilai_buku" => 'required',
+            "beban_bulan" => 'required'
+        ]);
+        $collection = new Collection();
+        $attr = $request->all();
+        $bulan = Carbon::parse($request->date)->format('m');
+        $hasil = $request->umur_ekonomis * 12;
+        $total = $hasil - $bulan;
+        $request->harga_beli = str_replace(',','',$request->harga_beli);
+        $request->beban_bulan = str_replace(',','',$request->beban_bulan);
+        $request->nilai_buku = str_replace(',','',$request->nilai_buku);
+        // dd($request->nilai_buku ,$request->beban_bulan);
+        for ($i = 0; $i <= $total; $i++) {
+            $collection->push((object)[
+                'tanggal' => Carbon::parse($request->date)->addMonths($i)->endOfMonth()->format('Y-m-d'),
+                'akumulasi_penyusutan' => 'asd',
+                'penyusutan_bulanan' => $request->beban_bulan,
+                'nilai_buku' => $request->harga_beli -= $request->beban_bulan
+            ]);
+        }
+        $carbon = Carbon::parse($attr['date'])->addYear($attr['umur_ekonomis'])->format('Y-m-d');
+        // dd($carbon, $request->umur_ekonomis, $collection);
+        $attr['harga_beli'] = str_replace(',', '', $request->harga_beli);
+        $attr['nilai_residu'] = str_replace(',', '', $request->nilai_residu);
+        $attr['akumulasi_beban'] = str_replace(',', '', $request->akumulasi_beban);
+        $attr['beban_tahun'] = str_replace(',', '', $request->beban_tahun);
+        $attr['nilai_buku'] = str_replace(',', '', $request->nilai_buku);
+        $attr['beban_bulan'] = str_replace(',', '', $request->beban_bulan);
+        return view('admin.asset.print', [
+            'attr' => $attr,
+            'collection' => $collection
+        ]);
     }
 }
