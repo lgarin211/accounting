@@ -64,7 +64,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="umur_ekonomis">Umur Ekonomis</label>
-            <input type="text" id="umur_ekonomis" value="{{ old('umur_ekonomis') }}" class="form-control @error('umur_ekonomis') is-invalid @enderror" name="umur_ekonomis">
+            <input type="text" id="umur_ekonomis" readonly value="{{ old('umur_ekonomis') }}" class="form-control @error('umur_ekonomis') is-invalid @enderror" name="umur_ekonomis">
             @error('umur_ekonomis')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -86,7 +86,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="metode">Metode</label>
-            <input type="text" id="metode" value="{{ old('metode') }}" class="form-control @error('metode') is-invalid @enderror" name="metode" id="metode">
+            <input type="text" id="metode" readonly value="{{ old('metode') }}" class="form-control @error('metode') is-invalid @enderror" name="metode" id="metode">
             @error('metode')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
