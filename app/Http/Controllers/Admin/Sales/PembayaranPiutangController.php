@@ -100,6 +100,21 @@ class PembayaranPiutangController extends Controller
                     )
                 );
 
+                $jml = (int)preg_replace('/[^\d.]/', '', $request->total);
+                $akun = Akun::find($request->akun_id);
+                $debit = $akun->debit + $jml;
+                $akun->update([
+                    'debit' => $debit,
+                    'saldo_akhir' => $akun->saldo_awal + ($debit - $akun->kredit)
+                ]);
+
+                $akun_piutang = Akun::findByCode(11000);
+                $kredit = $akun_piutang->kredit + $jml;
+                $akun_piutang->update([
+                    'kredit' => $kredit,
+                    'saldo_akhir' => $akun_piutang->saldo_awal + ($akun_piutang->debit - $kredit)
+                ]);
+
                 foreach ($request->pembayarans as $pembayaran) {
                     PembayaranPiutangDetailSale::create([
                         'pembayaran_piutang_sale_id' => $pembayarans->id,
@@ -117,18 +132,18 @@ class PembayaranPiutangController extends Controller
 
 
                     Transaction::create([
-                        'name' => 'Pembayaran Tidak Lunas '. date('d-M-Y'),
+                        'name' => 'Pembayaran Tidak Lunas ' . date('d-M-Y'),
                         'akun_id' => $request->akun_id,
                         'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar']),
                         'type' => 'Penjualan Lunas',
                     ]);
 
-                    $akun = Akun::findOrFail($request->akun_id);
-                    $akun->update([
-                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
-                    ]);
+                    // $akun = Akun::findOrFail($request->akun_id);
+                    // $akun->update([
+                    //     'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
+                    // ]);
 
-                    if($piutang->status == 1){
+                    if ($piutang->status == 1) {
                         $faktur = FakturSale::findOrFail($pembayaran['faktur_id']);
                         $faktur->update([
                             'status' => '1'
@@ -147,12 +162,12 @@ class PembayaranPiutangController extends Controller
                 ]);
 
                 // for ($i = 0; $i < 2; $i++) {
-                    Jurnalumumdetail::create([
-                        'akun_id' => $request->akun_id,
-                        'jurnalumum_id' => $jurnal->id,
-                        'debit' => preg_replace('/[^\d.]/', '', $request->total),
-                        'kredit' => 0,
-                    ]);
+                Jurnalumumdetail::create([
+                    'akun_id' => $request->akun_id,
+                    'jurnalumum_id' => $jurnal->id,
+                    'debit' => preg_replace('/[^\d.]/', '', $request->total),
+                    'kredit' => 0,
+                ]);
                 // }
                 // END Buat JURNAL ===============================
             });

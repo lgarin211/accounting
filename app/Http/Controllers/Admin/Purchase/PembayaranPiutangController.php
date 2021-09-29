@@ -99,6 +99,21 @@ class PembayaranPiutangController extends Controller
                     )
                 );
 
+                $jml = (int)preg_replace('/[^\d.]/', '', $request->total);
+                $akun = Akun::find($request->akun_id);
+                $kredit = $akun->kredit + $jml;
+                $akun->update([
+                    'kredit' => $kredit,
+                    'saldo_akhir' => $akun->saldo_awal + ($akun->debit - $kredit)
+                ]);
+
+                $akun_hutang = Akun::findByCode(20100);
+                $debit = $akun_hutang->debit + $jml;
+                $akun_hutang->update([
+                    'debit' => $debit,
+                    'saldo_akhir' => $akun_hutang->saldo_awal + ($debit - $akun_hutang->kredit)
+                ]);
+
                 foreach ($request->pembayarans as $pembayaran) {
                     PembayaranPiutangDetailBuy::create([
                         'pembayaran_piutang_buy_id' => $pembayarans->id,
@@ -121,11 +136,10 @@ class PembayaranPiutangController extends Controller
                         'type' => 'Pembelian Lunas',
                     ]);
 
-                    $akun = Akun::findOrFail($request->akun_id);
-                    $akun->update([
-                        'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
-                    ]);
-
+                    // $akun = Akun::findOrFail($request->akun_id);
+                    // $akun->update([
+                    //     'debit' => preg_replace('/[^\d.]/', '', $pembayaran['bayar'])
+                    // ]);
 
                     if ($piutang->status == 1) {
                         $faktur = FakturBuy::findOrFail($pembayaran['faktur_id']);
@@ -156,7 +170,7 @@ class PembayaranPiutangController extends Controller
                 // END Buat JURNAL ===============================
             });
 
-            return redirect()->route('admin.sales.pembayaran.index')->with('success', 'Pembayaran berhasil Tersimpan');
+            return redirect()->route('admin.purchase.pembayaran.index')->with('success', 'Pembayaran berhasil Tersimpan');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
