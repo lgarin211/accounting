@@ -2,7 +2,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="nama">Nama</label>
-            <input type="text" id="nama" class="form-control  @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}">
+            <input type="text" id="nama" class="form-control  @error('nama') is-invalid @enderror" name="nama" value="{{ $asset->nama ?? old('nama') }}">
             @error('nama')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -15,7 +15,7 @@
             <label for="kelompok">Kelompok</label>
             <select id="kelompok" class="form-control  @error('kelompok') is-invalid @enderror" id="kelompok" onchange="OnSelect()" name="kelompok">
                 @foreach($kelompok as $data)
-                <option value="{{ $data->id }}">{{ $data->nama }} - {{ $data->umur }} - {{ $data->metode }}</option>
+                <option @if($asset->kelompok_id == $data->id) selected @endif value="{{ $data->id }}">{{ $data->nama }} - {{ $data->umur }} - {{ $data->metode }}</option>
                 @endforeach
             </select>
             @error('kelompok')
@@ -28,8 +28,8 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="date">Tanggal Beli</label>
-            <input type="date" id="date" value="{{ old('date') }}" class="form-control @error('date') is-invalid @enderror" name="date">
-            @error('date')
+            <input type="date" id="tanggal_beli" value="{{ $request->tanggal_beli ?? old('tanggal_beli') }}" class="form-control @error('tanggal_beli') is-invalid @enderror" name="tanggal_beli">
+            @error('tanggal_beli')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
             </div>
@@ -97,7 +97,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="nomor_aktiva">nomor aktiva</label>
-            <input type="text" id="nomor_aktiva" value="{{ old('nomor_aktiva') }}" class="form-control @error('nomor_aktiva') is-invalid @enderror" name="nomor_aktiva">
+            <input type="text" id="nomor_aktiva" disabled value="{{ old('nomor_aktiva') }}" class="form-control @error('nomor_aktiva') is-invalid @enderror" name="nomor_aktiva">
             @error('nomor_aktiva')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -109,9 +109,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="departemen">departemen</label>
-            <select class="form-control @error('departemen') is-invalid @enderror" name="departemen">
-                <option value="1">Gedung</option>
-            </select>
+            <input type="text" class="form-control @error('departemen') is-invalid @enderror" name="departemen" readonly value="headquarter">
             @error('departemen')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -125,7 +123,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="akumulasi_beban">akumulasi beban</label>
-            <input type="text" id="akumulasi_beban" onkeyup="ChangeToFormatter(this)" value="{{ old('akumulasi_beban') }}" class="form-control @error('akumulasi_beban') is-invalid @enderror" name="akumulasi_beban">
+            <input type="text" id="akumulasi_beban" disabled onkeyup="ChangeToFormatter(this)" value="{{ old('akumulasi_beban') }}" class="form-control @error('akumulasi_beban') is-invalid @enderror" name="akumulasi_beban">
             @error('akumulasi_beban')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -136,7 +134,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="beban_tahun">beban per tahun ini</label>
-            <input type="text" id="beban_tahun" onkeyup="ChangeToFormatter(this)" value="{{ old('beban_tahun') }}" class="form-control @error('beban_tahun') is-invalid @enderror" name="beban_tahun">
+            <input type="text" id="beban_tahun" disabled onkeyup="ChangeToFormatter(this)" value="{{ old('beban_tahun') }}" class="form-control @error('beban_tahun') is-invalid @enderror" name="beban_tahun">
             @error('beban_tahun')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -158,7 +156,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="nilai_buku">nilai buku</label>
-            <input type="text" id="nilai_buku" onkeyup="ChangeToFormatter(this)" value="{{ old('nilai_buku') }}" class="form-control @error('nilai_buku') is-invalid @enderror" name="nilai_buku">
+            <input type="text" id="nilai_buku" disabled onkeyup="ChangeToFormatter(this)" value="{{ old('nilai_buku') }}" class="form-control @error('nilai_buku') is-invalid @enderror" name="nilai_buku">
             @error('nilai_buku')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -169,12 +167,45 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="beban_bulan">beban bulan</label>
-            <input type="text" id="beban_bulan" onkeyup="ChangeToFormatter(this)" value="{{ old('beban_bulan') }}" class="form-control @error('beban_bulan') is-invalid @enderror" name="beban_bulan">
+            <input type="text" id="beban_bulan" disabled onkeyup="ChangeToFormatter(this)" value="{{ old('beban_bulan') }}" class="form-control @error('beban_bulan') is-invalid @enderror" name="beban_bulan">
             @error('beban_bulan')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>
             </div>
             @enderror
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="harta">Asset Harta</label>
+            <select name="asset_harta" id="asset_harta" class="form-control">
+                @foreach($akun as $data)
+                <option value="{{ $data->id }}">{{ $data->kode }} - {{ $data->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="akumulasi_depresiasi">Akumulasi Depresiasi</label>
+            <select name="akumulasi_depresiasi" id="akumulasi_depresiasi" class="form-control">
+                @foreach($akun as $data)
+                <option value="{{ $data->id }}">{{ $data->kode }} - {{ $data->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="depresiasi">Depresiasi</label>
+            <select name="depresiasi" id="depresiasi" class="form-control">
+                @foreach($akun as $data)
+                <option value="{{ $data->id }}">{{ $data->kode }} - {{ $data->name }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
 </div>
@@ -202,8 +233,8 @@
         formatted = output.reverse().join("");
         return ("" + formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
     };
-    function ChangeToFormatter(qr)
-    {
+
+    function ChangeToFormatter(qr) {
         qr.value = formatter(qr.value)
     }
 </script>
