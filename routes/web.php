@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
             // Asset
             Route::resource('asset', 'AssetController');
             Route::post('/asset/print', 'AssetController@print')->name('asset.print');
+            Route::post('/asset/print_update', 'AssetController@print_update')->name('asset.print_update');
+
         });
 
         Route::prefix('ledger')->group(function () {

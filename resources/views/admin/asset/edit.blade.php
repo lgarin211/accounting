@@ -7,7 +7,7 @@
 <li class="breadcrumb-item">
     <a href="{{ route('admin.asset.index') }}">Asset</a>
 </li>
-<li class="breadcrumb-item active" aria-current="page">Create</li>
+<li class="breadcrumb-item active" aria-current="page">Edit</li>
 @endpush
 @section('content')
 <div class="row">
@@ -17,7 +17,7 @@
                 <h3 class="card-title">Aktiva Tetap (Fixed Asset)</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.asset.print') }}" method="post" id="form">
+                <form action="{{ route('admin.asset.print_update', $asset->id) }}" method="post" id="form">
                     @csrf
                     @include('admin.asset.form')
                 </form>
