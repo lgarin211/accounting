@@ -7,17 +7,29 @@
 <li class="breadcrumb-item">
     <a href="{{ route('admin.asset.index') }}">Asset</a>
 </li>
-<li class="breadcrumb-item active" aria-current="page">Edit</li>
+<li class="breadcrumb-item active" aria-current="page">Create</li>
 @endpush
 @section('content')
 <input type="hidden" value="{{ $attr['harga_beli'] }}" id="harga_beli">
 <input type="hidden" value="{{ $attr['umur_ekonomis'] }}" id="umur">
 <div class="row">
+    @if (count($errors) > 0)
+    <div class="col-md-12">
+        <div class="alert alert-warning">
+            <h5 class="text-center">Validation</h5>
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li><strong> {{ $error }} </strong></li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <div>
-                    <h2 class="card-title"><strong>{{ $attr['nama'] }} Edit</strong></h2>
+                    <h2 class="card-title"><strong>{{ $attr['nama'] }}</strong></h2>
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-success" data-toggle="tooltip" data-html="true" title="{{ $attr['btn_asset_harta']->kode }}">
@@ -82,7 +94,7 @@
                             <tr>
                                 <th>Nomor Aktiva</th>
                                 <th>:</th>
-                                <th>{{ $attr['nomor_aktiva'] ?? 'Kosong' }}</th>
+                                <th>{{ $attr['nomor_aktiva'] ?? 'Kosong/Null' }}</th>
                             </tr>
                             <tr>
                                 <th>Departemen</th>
@@ -92,7 +104,7 @@
                             <tr>
                                 <th>Akumulasi Beban</th>
                                 <th>:</th>
-                                <th>Kosong null</th>
+                                <th>Kosong/Null</th>
                             </tr>
                             <tr>
                                 <th>Beban Per Tahun ini</th>
@@ -121,7 +133,8 @@
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
-                            <tr>
+                            <tr class="bg-primary">
+                                <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Akumulasi Penyusutan</th>
                                 <th>Penyusutan Bulanan</th>
@@ -131,10 +144,13 @@
                         <tbody>
                             @foreach($collection as $data)
                             <tr onclick="ClickTheRow(this)">
-                                <td class="text-center">{{ $data->tanggal }}</td>
-                                <td class="text-center"><span class="badge badge-success">{{ $data->akumulasi_penyusutan }}</span></td>
-                                <td class="text-right">{{ number_format($data->penyusutan_bulanan) }}</td>
-                                <td class="text-right">{{ number_format($data->nilai_buku) }}</td>
+                                <th>{{ $loop->iteration }}.</th>
+                                <td class="text-center">
+                                    <h5>{{ $data->tanggal }}</h5>
+                                </td>
+                                <td class="text-center"><span class="badge badge-info">{{ $data->akumulasi_penyusutan }}</span></td>
+                                <td class="text-right"><strong>{{ number_format($data->penyusutan_bulanan) }}</strong></td>
+                                <td class="text-right"><strong>{{ number_format($data->nilai_buku) }}</strong></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -142,9 +158,8 @@
                 </div>
             </div>
             <div class="card-footer">
-                <form action="{{ route('admin.asset.update', $asset->id) }}" method="post">
+                <form action="{{ route('admin.asset.store') }}" method="post">
                     @csrf
-                    @method('put')
                     <input type="hidden" value="{{ $attr['nama'] }}" name='nama'>
                     <input type="hidden" value="{{ $attr['kelompok']->id }}" name="kelompok_id">
                     <input type="hidden" value="{{ $attr['tanggal_beli'] }}" name="tanggal_beli">
@@ -157,7 +172,7 @@
                     <input type="hidden" value="{{ $attr['asset_harta'] }}" name="asset_harta">
                     <input type="hidden" value="{{ $attr['akumulasi_depresiasi'] }}" name="akumulasi_depresiasi">
                     <input type="hidden" value="{{ $attr['depresiasi'] }}" name="depresiasi">
-                    <button class="btn btn-success" onclick="TheFormSubmit()">Update</button>
+                    <button class="btn btn-success" type="submit">Submit</button>
                 </form>
             </div>
         </div>
@@ -202,10 +217,6 @@
         let penyusutan_per_bulan = parseInt(penyusutan_per_tahun) / 12
         $('#penyusutan_per_tahun').val(formatter(penyusutan_per_tahun))
         $('#penyusutan_per_bulan').val(formatter(penyusutan_per_bulan))
-    }
-
-    function TheFormSubmit() {
-        $('#form').submit()
     }
 </script>
 @endpush

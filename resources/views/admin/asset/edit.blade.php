@@ -15,15 +15,18 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Aktiva Tetap (Fixed Asset)</h3>
+                <a href="{{ route('admin.asset.index') }}" class="btn btn-info">Back</a>
+
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.asset.print_update', $asset->id) }}" method="post" id="form">
                     @csrf
+                    @method('put')
                     @include('admin.asset.form')
                 </form>
             </div>
             <div class="card-footer">
-                <button class="btn btn-success" onclick="TheFormSubmit()">Submit</button>
+                <button class="btn btn-success" onclick="TheFormSubmit()">Update</button>
             </div>
         </div>
     </div>

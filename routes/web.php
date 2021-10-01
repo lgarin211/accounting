@@ -60,8 +60,8 @@ Route::middleware('auth')->group(function () {
             Route::view('kelompok-aktiva', 'admin.asset.kelompok_aktiva')->name('kelompok-index');
             // Asset
             Route::resource('asset', 'AssetController');
-            Route::post('/asset/print', 'AssetController@print')->name('asset.print');
-            Route::post('/asset/print_update', 'AssetController@print_update')->name('asset.print_update');
+            Route::post('/asset/print_store', 'AssetController@print_store')->name('asset.print_store');
+            Route::put('/asset/print_update/{id}', 'AssetController@print_update')->name('asset.print_update');
 
         });
 

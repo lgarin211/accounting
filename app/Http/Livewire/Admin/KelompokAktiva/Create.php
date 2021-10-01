@@ -11,7 +11,7 @@ class Create extends Component
 
     protected $rules = [
         'nama' => 'required',
-        'umur' => 'required|gt:0',
+        'umur' => 'required',
         'metode' => 'required',
     ];
 
