@@ -27,9 +27,15 @@ const unformatter = (numb) => {
     return parseInt(numb.replace(/,/g, ""));
 }
 
-const onlyNumber = (e) => {
-    if (e.which != 8 && e.which != 0 && e.which < 48 || e.which > 57) {
-        e.preventDefault();
+const onlyNumber = (e, canEnter = false) => {
+    if (canEnter) {
+        if (e.which != 8 && e.which != 0 && e.which != 13 && e.which < 48 || e.which > 57) {
+            e.preventDefault();
+        }
+    } else {
+        if (e.which != 8 && e.which != 0 && e.which < 48 || e.which > 57) {
+            e.preventDefault();
+        }
     }
 }
 

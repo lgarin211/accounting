@@ -7,7 +7,7 @@ use App\Models\Akun;
 
 class Create extends Component
 {
-    public $kode, $name, $subklasifikasi, $level;
+    public $kode, $name, $subklasifikasi, $level, $saldo_awal;
 
     public $levels = [];
 
@@ -19,6 +19,7 @@ class Create extends Component
         'kode' => 'required|min:4|unique:akuns',
         'name' => 'required',
         'subklasifikasi' => 'required',
+        'saldo_awal' => 'required|numeric',
     ];
 
     public function kodeOtomatis()
@@ -56,12 +57,16 @@ class Create extends Component
     public function store()
     {
         $data = $this->validate(array_merge($this->rules, [
-            'level' => 'required|in:' . implode(',', $this->levels)
+            'level' => 'required|in:' . implode(',', $this->levels),
         ]));
+
+        if (isset($data['saldo_awal'])) {
+            $data["saldo_awal"] = (int)$data['saldo_awal'];
+        }
 
         try {
             Akun::create($data);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             $this->emit('error', 'Data gagal disimpan');
         }
 
