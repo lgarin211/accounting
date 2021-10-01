@@ -15,7 +15,8 @@ class Edit extends Component
     protected $rules = [
         'akun.name' => 'required',
         'akun.subklasifikasi' => 'required',
-        'akun.level' => 'required'
+        'akun.level' => 'required',
+        'akun.saldo_awal' => 'required|numeric',
     ];
 
     public function render()
@@ -38,10 +39,10 @@ class Edit extends Component
     public function update()
     {
         $this->validate(array_merge($this->rules, [
-            'akun.name' => 'required',
-            'akun.subklasifikasi' => 'required',
             'akun.level' => 'required|in:' . implode(',', $this->levels)
         ]));
+
+        $this->akun->saldo_awal = (int)$this->akun->saldo_awal;
 
         try {
             $this->akun->save();
