@@ -28,6 +28,7 @@
                                     <th>Nama Akun</th>
                                     <th>Subklasifikasi</th>
                                     <th>Level</th>
+                                    <th>Saldo Awal</th>
                                     <th>Debit</th>
                                     <th>Kredit</th>
                                     <th style="width: 1px">Action</th>
@@ -43,8 +44,9 @@
                                         <td>{{ $account->name }}</td>
                                         <td>{{ $account->subklasifikasi }}</td>
                                         <td>{{ $account->level }}</td>
-                                        <td>{{ $account->debit }}</td>
-                                        <td>{{ $account->kredit }}</td>
+                                        <td>{{ number_format($account->saldo_awal) }}</td>
+                                        <td>{{ number_format($account->debit) }}</td>
+                                        <td>{{ number_format($account->kredit) }}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">

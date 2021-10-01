@@ -11,3 +11,7 @@
     @livewire('admin.akun.data')
 
 @endsection
+
+@push('script')
+    <script src="{{ asset('js/helpers.js') }}"></script>
+@endpush

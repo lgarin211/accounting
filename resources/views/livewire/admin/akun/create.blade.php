@@ -13,6 +13,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <input type="text" id="kode" name="kode" wire:model="kode" 
+                                    wire:loading.attr="disabled" wire:target="store" 
                                     class="form-control @error('kode') is-invalid @enderror" placeholder="Kode" />
                                 @error('kode')
                                     <span class="invalid-feedback" role="alert">
@@ -29,6 +30,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <input type="text" id="name" name="name" wire:model="name" 
+                                    wire:loading.attr="disabled" wire:target="store" 
                                     class="form-control @error('name') is-invalid @enderror" placeholder="Nama" />
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -45,6 +47,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <input type="text" id="subklasifikasi" name="subklasifikasi" wire:model="subklasifikasi" 
+                                    wire:loading.attr="disabled" wire:target="store" 
                                     class="form-control @error('subklasifikasi') is-invalid @enderror" placeholder="Subklasifikasi" />
                                 @error('subklasifikasi')
                                     <span class="invalid-feedback" role="alert">
@@ -61,6 +64,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <select name="level" id="level" wire:model="level"
+                                    wire:loading.attr="disabled" wire:target="store" 
                                     class="form-control select2 @error('level') is-invalid @enderror">
                                     <option value="" selected>-- Pilih Level --</option>
                                     @foreach ($levels as $lvl)
@@ -68,6 +72,24 @@
                                     @endforeach
                                 </select>
                                 @error('level')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">
+                                <label for="saldo_awal">Saldo Awal</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" id="saldo_awal" name="saldo_awal" wire:model="saldo_awal"
+                                    wire:loading.attr="disabled" wire:target="store" 
+                                    onkeypress="onlyNumber(event, true)" 
+                                    class="form-control @error('saldo_awal') is-invalid @enderror" placeholder="Saldo Awal" />
+                                @error('saldo_awal')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

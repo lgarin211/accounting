@@ -16,6 +16,7 @@
                                 <label>Nama Akun: </label>
                                 <div class="form-group">
                                     <input type="text" placeholder="Nama Akun" wire:model="akun.name"
+                                        wire:loading.attr="disabled" wire:target="update"
                                         class="form-control @error('akun.name') is-invalid @enderror" />
                                     @error('akun.name')
                                         <span class="invalid-feedback" role="alert">
@@ -27,6 +28,7 @@
                                 <label>Subklasifikasi: </label>
                                 <div class="form-group">
                                     <input type="text" placeholder="Subklasifikasi" wire:model="akun.subklasifikasi"
+                                        wire:loading.attr="disabled" wire:target="update"
                                         class="form-control @error('akun.subklasifikasi') is-invalid @enderror" />
                                     @error('akun.subklasifikasi')
                                         <span class="invalid-feedback" role="alert">
@@ -37,7 +39,8 @@
 
                                 <label>Level: </label>
                                 <div class="form-group">
-                                    <select wire:model="akun.level" class="form-control @error('akun.level') is-invalid @enderror">
+                                    <select wire:model="akun.level" wire:loading.attr="disabled" wire:target="update" 
+                                        class="form-control @error('akun.level') is-invalid @enderror">
                                         <option value="">-- Pilih Level --</option>
                                         @foreach($levels as $level)
                                             <option value="{{ $level }}" 
@@ -47,6 +50,19 @@
                                         @endforeach
                                     </select>
                                     @error('akun.level')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <label>Saldo Awal: </label>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Saldo Awal" wire:model="akun.saldo_awal"
+                                        wire:loading.attr="disabled" wire:target="update"
+                                        onkeypress="onlyNumber(event, true)" 
+                                        class="form-control @error('akun.saldo_awal') is-invalid @enderror" />
+                                    @error('akun.saldo_awal')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
