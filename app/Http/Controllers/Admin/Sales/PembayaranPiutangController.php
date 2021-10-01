@@ -115,6 +115,19 @@ class PembayaranPiutangController extends Controller
                     'saldo_akhir' => $akun_piutang->saldo_awal + ($akun_piutang->debit - $kredit)
                 ]);
 
+                $akuns = [
+                    [
+                        'id' => $akun->id,
+                        'debit' => $jml,
+                        'kredit' => 0,
+                    ],
+                    [
+                        'id' => $akun_piutang->id,
+                        'debit' => 0,
+                        'kredit' => $jml,
+                    ]
+                ];
+
                 foreach ($request->pembayarans as $pembayaran) {
                     PembayaranPiutangDetailSale::create([
                         'pembayaran_piutang_sale_id' => $pembayarans->id,
@@ -161,14 +174,14 @@ class PembayaranPiutangController extends Controller
                     'uraian' => 'Pembayaran Piutang', // nginput ngasal
                 ]);
 
-                // for ($i = 0; $i < 2; $i++) {
-                Jurnalumumdetail::create([
-                    'akun_id' => $request->akun_id,
-                    'jurnalumum_id' => $jurnal->id,
-                    'debit' => preg_replace('/[^\d.]/', '', $request->total),
-                    'kredit' => 0,
-                ]);
-                // }
+                for ($i = 0; $i < count($akuns); $i++) {
+                    Jurnalumumdetail::create([
+                        'akun_id' => $akuns[$i]['id'],
+                        'jurnalumum_id' => $jurnal->id,
+                        'debit' => $akuns[$i]['debit'],
+                        'kredit' => $akuns[$i]['kredit'],
+                    ]);
+                }
                 // END Buat JURNAL ===============================
             });
 
