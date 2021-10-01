@@ -15,9 +15,10 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Aktiva Tetap (Fixed Asset)</h3>
+                <a href="{{ route('admin.asset.index') }}" class="btn btn-info">Back</a>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.asset.print') }}" method="post" id="form">
+                <form action="{{ route('admin.asset.print_store') }}" method="post" id="form">
                     @csrf
                     @include('admin.asset.form')
                 </form>
@@ -31,20 +32,24 @@
 @stop
 @push('script')
 <script>
-    function OnSelect()
-    {
+    function OnSelect() {
         console.log($('#kelompok').val())
         $.ajax({
-            url: '/api/asset/kelompok/'+$('#kelompok').val(),
-            success: function(response){
+            url: '/api/asset/kelompok/' + $('#kelompok').val(),
+            success: function(response) {
                 $('#metode').val(response.metode)
                 $('#umur_ekonomis').val(response.umur)
             },
-            error: function(err){
-                alert(err)
+            error: function(err) {
+                Swal.fire(
+                    'Alert!',
+                    'Kelompok Aktiva Tidak Ditemukan!',
+                    'warning'
+                )
             }
         })
     }
+
     function TheFormSubmit() {
         $('#form').submit()
     }

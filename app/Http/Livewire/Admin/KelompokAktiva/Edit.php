@@ -13,7 +13,7 @@ class Edit extends Component
 
     protected $rules = [
         'kelompok.nama' => 'required',
-        'kelompok.umur' => 'required|gt:0',
+        'kelompok.umur' => 'required',
         'kelompok.metode' => 'required'
     ];
 
