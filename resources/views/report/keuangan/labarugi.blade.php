@@ -15,7 +15,8 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-around">
                         <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.pdf') }}" class="btn btn-danger">PDF</a>
-                        <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.excel') }}" class="btn btn-success">EXCEL</a>
+                        {{-- Takeout sementara --}}
+                        {{-- <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.excel') }}" class="btn btn-success">EXCEL</a> --}}
                     </div>
                 </div>
             </div>
