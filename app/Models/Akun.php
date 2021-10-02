@@ -48,4 +48,9 @@ class Akun extends Model
     {
         return $this->hasMany(\App\Models\Sale\FakturSale::class, 'akun_id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'akun_id');
+    }
 }
