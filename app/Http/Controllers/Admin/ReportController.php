@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\LabarugiExport;
 use App\Exports\NeracaExport;
 use App\Http\Controllers\Controller;
-use App\Models\{Akun, Jurnalumumdetail, Bkk, BkkDetail};
+use App\Models\{Akun, Jurnalumumdetail, Bkk, BkkDetail, Transaction};
 use App\Models\Purchase\FakturBuy;
 use App\Models\Sale\FakturSale;
 use Illuminate\Http\Request;
@@ -95,30 +95,45 @@ class ReportController extends Controller
         $end = $this->endDate;
 
         if ($start && $end) {
-            $akun_aktiva = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Aktiva')->orderBy('id', 'asc')->get();
+            $akun_aktiva = Akun::where('level', 'Aktiva')
+                ->with(['transactions' => function ($q) use ($start, $end) {
+                    $q->whereBetween('tanggal', [$start, $end]);
+                }])
+                ->orderBy('id', 'asc')->get();
+    
             $hitung_aktiva = [];
             foreach ($akun_aktiva as $key) {
-                array_push($hitung_aktiva, $key->debit - $key->kredit);
+                array_push($hitung_aktiva, $key->saldo_awal + ( $key->transactions->sum('debit') - $key->transactions->sum('kredit')));
             }
             $total_aktiva = array_sum($hitung_aktiva);
 
-            $akun_modal = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Modal')->orderBy('id', 'asc')->get();
+            $akun_modal = Akun::where('level', 'Modal')
+                ->with(['transactions' => function ($q) use ($start, $end) {
+                    $q->whereBetween('tanggal', [$start, $end]);
+                }])
+                ->orderBy('id', 'asc')->get();
+
             $hitung_modal = [];
             foreach ($akun_modal as $key) {
-                array_push($hitung_modal, $key->debit - $key->kredit);
+                array_push($hitung_modal, $key->saldo_awal + ( $key->transactions->sum('debit') - $key->transactions->sum('kredit')));
             }
             $total_modal = array_sum($hitung_modal);
 
-            $akun_kewajiban = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $akun_kewajiban = Akun::where('level', 'Kewajiban')
+                ->with(['transactions' => function ($q) use ($start, $end) {
+                    $q->whereBetween('tanggal', [$start, $end]);
+                }])
+                ->orderBy('id', 'asc')->get();
+
             $hitung_kewajiban = [];
             foreach ($akun_kewajiban as $key) {
-                array_push($hitung_kewajiban, $key->debit - $key->kredit);
+                array_push($hitung_kewajiban, $key->saldo_awal + ( $key->transactions->sum('debit') - $key->transactions->sum('kredit')));
             }
             $total_kewajiban = array_sum($hitung_kewajiban);
 
-            $aktiva = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Aktiva')->orderBy('id', 'asc')->get();
-            $modal = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Modal')->orderBy('id', 'asc')->get();
-            $kewajiban = Akun::whereBetween('created_at', [$start, $end])->where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
+            $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
+            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
         } else {
             $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
             $hitung_aktiva = [];
