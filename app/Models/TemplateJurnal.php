@@ -20,4 +20,9 @@ class TemplateJurnal extends Model
     {
         return $this->belongsTo(Kontak::class);
     }
+
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class);
+    }
 }
