@@ -111,7 +111,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('kode', 'asc')->get();
 
             $hitung_modal = [];
             foreach ($akun_modal as $key) {
@@ -123,7 +123,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('kode', 'asc')->get();
 
             $hitung_kewajiban = [];
             foreach ($akun_kewajiban as $key) {
@@ -131,9 +131,9 @@ class ReportController extends Controller
             }
             $total_kewajiban = array_sum($hitung_kewajiban);
 
-            $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
-            $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
-            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
+            $modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
+            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
         } else {
             $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
             $hitung_aktiva = [];
@@ -142,23 +142,23 @@ class ReportController extends Controller
             }
             $total_aktiva = array_sum($hitung_aktiva);
 
-            $akun_modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
+            $akun_modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
             $hitung_modal = [];
             foreach ($akun_modal as $key) {
                 array_push($hitung_modal, $key->debit - $key->kredit);
             }
             $total_modal = array_sum($hitung_modal);
 
-            $akun_kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $akun_kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
             $hitung_kewajiban = [];
             foreach ($akun_kewajiban as $key) {
                 array_push($hitung_kewajiban, $key->debit - $key->kredit);
             }
 
             $total_kewajiban = array_sum($hitung_kewajiban);
-            $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
-            $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
-            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
+            $modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
+            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
         }
 
         return view('report.neraca.index', [
