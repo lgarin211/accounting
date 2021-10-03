@@ -11,6 +11,8 @@ class Transaction extends Model
 
     protected $guarded = [];
 
+    protected $table = 'transactions';
+
     public function akun()
     {
         return $this->belongsTo(Akun::class);
