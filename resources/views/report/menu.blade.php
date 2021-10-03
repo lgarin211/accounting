@@ -69,6 +69,41 @@
                                             <strong>{{ $message }}</strong>
                                         </div>
                                     @enderror
+
+                                    <hr>
+
+                                    <b class="d-block mb-2">
+                                        Format Tanda Tangan
+                                    </b>
+
+                                    <label for="tempat" class="mr-2">Tempat</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="tempat" id="tempat" required>
+
+                                    <label for="tanggal" class="mr-2">Tanggal</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
+
+                                    <label for="kodam" class="mr-2">Kodam</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="kodam" id="kodam" required>
+
+                                    <label for="jabatan_fungsional" class="mr-2">Jabatan Fungsional</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="jabatan_fungsional" id="jabatan_fungsional" required>
+
+                                    <label for="nama" class="mr-2">Nama</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="nama" id="nama" required>
+
+                                    <label for="pangkat" class="mr-2">Pangkat</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="pangkat" id="pangkat" required>
+
+                                    <label for="nrp" class="mr-2">Nrp</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="nrp" id="nrp" required>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -111,6 +146,41 @@
                                             <strong>{{ $message }}</strong>
                                         </div>
                                     @enderror
+
+                                    <hr>
+
+                                    <b class="d-block mb-2">
+                                        Format Tanda Tangan
+                                    </b>
+
+                                    <label for="tempat" class="mr-2">Tempat</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="tempat" id="tempat" required>
+
+                                    <label for="tanggal" class="mr-2">Tanggal</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
+
+                                    <label for="kodam" class="mr-2">Kodam</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="kodam" id="kodam" required>
+
+                                    <label for="jabatan_fungsional" class="mr-2">Jabatan Fungsional</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="jabatan_fungsional" id="jabatan_fungsional" required>
+
+                                    <label for="nama" class="mr-2">Nama</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="nama" id="nama" required>
+
+                                    <label for="pangkat" class="mr-2">Pangkat</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="pangkat" id="pangkat" required>
+
+                                    <label for="nrp" class="mr-2">Nrp</label>
+                                    <input type="text" class="form-control mr-1 mb-2"
+                                        name="nrp" id="nrp" required>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

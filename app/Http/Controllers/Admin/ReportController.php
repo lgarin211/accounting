@@ -27,7 +27,9 @@ class ReportController extends Controller
 
     public function menu()
     {
-        return view('report.menu');
+        return view('report.menu', [
+            'nowDate' => $this->formatDate(date('Y-m-d'))
+        ]);
     }
 
     public function jurnalumum()
@@ -99,8 +101,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
-    
+                ->orderBy('kode', 'asc')->get();
             $hitung_aktiva = [];
             foreach ($akun_aktiva as $key) {
                 array_push($hitung_aktiva, $key->saldo_awal + ( $key->transactions->sum('debit') - $key->transactions->sum('kredit')));
@@ -111,7 +112,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('kode', 'asc')->get();
 
             $hitung_modal = [];
             foreach ($akun_modal as $key) {
@@ -123,7 +124,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('kode', 'asc')->get();
 
             $hitung_kewajiban = [];
             foreach ($akun_kewajiban as $key) {
@@ -131,34 +132,34 @@ class ReportController extends Controller
             }
             $total_kewajiban = array_sum($hitung_kewajiban);
 
-            $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
-            $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
-            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
+            $modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
+            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
         } else {
-            $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
+            $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
             $hitung_aktiva = [];
             foreach ($akun_aktiva as $key) {
                 array_push($hitung_aktiva, $key->debit - $key->kredit);
             }
             $total_aktiva = array_sum($hitung_aktiva);
 
-            $akun_modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
+            $akun_modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
             $hitung_modal = [];
             foreach ($akun_modal as $key) {
                 array_push($hitung_modal, $key->debit - $key->kredit);
             }
             $total_modal = array_sum($hitung_modal);
 
-            $akun_kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $akun_kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
             $hitung_kewajiban = [];
             foreach ($akun_kewajiban as $key) {
                 array_push($hitung_kewajiban, $key->debit - $key->kredit);
             }
 
             $total_kewajiban = array_sum($hitung_kewajiban);
-            $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
-            $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
-            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+            $aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
+            $modal = Akun::where('level', 'Modal')->orderBy('kode', 'asc')->get();
+            $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('kode', 'asc')->get();
         }
 
         return view('report.neraca.index', [
@@ -167,7 +168,14 @@ class ReportController extends Controller
             'kewajiban' => $kewajiban,
             'total_aktiva' => $total_aktiva,
             'total_modal' => $total_modal,
-            'total_kewajiban' => $total_kewajiban
+            'total_kewajiban' => $total_kewajiban,
+            'tempat' => request('tempat'),
+            'nowDate' => $this->formatDate(date('Y-m-d')),
+            'kodam' => request('kodam'),
+            'jabatan_fungsional' => request('jabatan_fungsional'),
+            'nama' => request('nama'),
+            'pangkat' => request('pangkat'),
+            'nrp' => request('nrp')
         ]);
     }
     public function labarugi()
@@ -185,7 +193,7 @@ class ReportController extends Controller
             })->sum('debit');
 
             $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','BiayaOperasional')
                                                 ->where('bkks.status','BKK')
                                                 ->whereBetween('bkks.tanggal', [$start, $end])
@@ -193,7 +201,7 @@ class ReportController extends Controller
                                                 ->sum('jml_uang');
 
             $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','PendapatanLain')
                                                 ->where('bkks.status','BKM')
                                                 ->whereBetween('bkks.tanggal', [$start, $end])
@@ -210,16 +218,16 @@ class ReportController extends Controller
             $JU_AkunBO = Jurnalumumdetail::whereHas('akun', function ($query) {
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
-            
+
             $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','BiayaOperasional')
                                                 ->where('bkks.status','BKK')
                                                 ->select('jml_uang')
                                                 ->sum('jml_uang');
 
             $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','PendapatanLain')
                                                 ->where('bkks.status','BKM')
                                                 ->select('jml_uang')
@@ -235,7 +243,14 @@ class ReportController extends Controller
             'laba_bersih' => $laba_bersih,
             'beban' => $beban,
             'BiayaOperasional' => $BiayaOperasional,
-            'PendapatanLain' => $BKM_PendapatLain
+            'PendapatanLain' => $BKM_PendapatLain,
+            'tempat' => request('tempat'),
+            'nowDate' => $this->formatDate(date('Y-m-d')),
+            'kodam' => request('kodam'),
+            'jabatan_fungsional' => request('jabatan_fungsional'),
+            'nama' => request('nama'),
+            'pangkat' => request('pangkat'),
+            'nrp' => request('nrp')
         ]);
     }
 
@@ -285,7 +300,7 @@ class ReportController extends Controller
             'select' => Akun::get()
         ]);
     }
-    public function neraca_pdf()
+    public function neraca_pdf(Request $request)
     {
         $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
         $hitung_aktiva = [];
@@ -311,17 +326,26 @@ class ReportController extends Controller
         $aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
         $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
         $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
+
         $pdf = PDF::loadview('report.neraca.pdf', [
             'aktiva' => $aktiva,
             'modal' => $modal,
             'kewajiban' => $kewajiban,
             'total_aktiva' => $total_aktiva,
             'total_modal' => $total_modal,
-            'total_kewajiban' => $total_kewajiban
+            'total_kewajiban' => $total_kewajiban,
+            'tempat' => $request->get('tempat'),
+            'kodam' => $request->get('kodam'),
+            'nowDate' => $this->formatDate(date('Y-m-d')),
+            'jabatan_fungsional' => $request->get('jabatan_fungsional'),
+            'nama' => $request->get('nama'),
+            'pangkat' => $request->get('pangkat'),
+            'nrp' => $request->get('nrp')
         ]);
+
         return $pdf->stream();
     }
-    public function labarugi_pdf()
+    public function labarugi_pdf(Request $request)
     {
         $pendapatan = FakturSale::sum('total');
         $beban = FakturBuy::sum('total');
@@ -332,14 +356,14 @@ class ReportController extends Controller
         })->sum('debit');
 
         $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','BiayaOperasional')
                                                 ->where('bkks.status','BKK')
                                                 ->select('jml_uang')
                                                 ->sum('jml_uang');
 
         $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
-                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                                                 ->where('akuns.level','PendapatanLain')
                                                 ->where('bkks.status','BKM')
                                                 ->select('jml_uang')
@@ -354,8 +378,16 @@ class ReportController extends Controller
             'laba_bersih' => $laba_bersih,
             'beban' => $beban,
             'BiayaOperasional' => $BiayaOperasional,
-            'PendapatanLain' => $BKM_PendapatLain
+            'PendapatanLain' => $BKM_PendapatLain,
+            'tempat' => $request->get('tempat'),
+            'kodam' => $request->get('kodam'),
+            'nowDate' => $this->formatDate(date('Y-m-d')),
+            'jabatan_fungsional' => $request->get('jabatan_fungsional'),
+            'nama' => $request->get('nama'),
+            'pangkat' => $request->get('pangkat'),
+            'nrp' => $request->get('nrp')
         ]);
+
         return $pdf->stream();
     }
     public function neraca_excel()
