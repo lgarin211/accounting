@@ -99,7 +99,7 @@ class ReportController extends Controller
                 ->with(['transactions' => function ($q) use ($start, $end) {
                     $q->whereBetween('tanggal', [$start, $end]);
                 }])
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('kode', 'asc')->get();
     
             $hitung_aktiva = [];
             foreach ($akun_aktiva as $key) {
@@ -135,7 +135,7 @@ class ReportController extends Controller
             $modal = Akun::where('level', 'Modal')->orderBy('id', 'asc')->get();
             $kewajiban = Akun::where('level', 'Kewajiban')->orderBy('id', 'asc')->get();
         } else {
-            $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('id', 'asc')->get();
+            $akun_aktiva = Akun::where('level', 'Aktiva')->orderBy('kode', 'asc')->get();
             $hitung_aktiva = [];
             foreach ($akun_aktiva as $key) {
                 array_push($hitung_aktiva, $key->debit - $key->kredit);
