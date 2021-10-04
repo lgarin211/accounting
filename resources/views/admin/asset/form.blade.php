@@ -12,8 +12,24 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
+            <label for="category">Category Akun</label>
+            <select id="category" class="form-control  @error('category') is-invalid @enderror" id="category" onchange="OnSelectCategory()" name="category">
+                <option value="">--Pilih category Aktiva--</option>
+                @foreach($category as $data)
+                <option @if($asset->kategori_asset == $data->kategori_asset) selected @endif value="{{ $data->kategori_asset }}">{{ $data->kategori_asset ?? 'Kategori Kosong' }}</option>
+                @endforeach
+            </select>
+            @error('category')
+            <div class="invalid-feedback">
+                <strong>{{ $message }}</strong>
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
             <label for="kelompok">Kelompok</label>
-            <select id="kelompok" class="form-control  @error('kelompok') is-invalid @enderror" id="kelompok" onchange="OnSelect()" name="kelompok">
+            <select id="kelompok" class="form-control  @error('kelompok') is-invalid @enderror" id="kelompok" onchange="OnSelectKelompok()" name="kelompok">
                 <option value="">--Pilih Kelompok Aktiva--</option>
                 @foreach($kelompok as $data)
                 <option @if($asset->kelompok_id == $data->id) selected @endif value="{{ $data->id }}">{{ $data->nama }} - {{ $data->umur }} - {{ $data->metode }}</option>
@@ -65,7 +81,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="umur_ekonomis">Umur Ekonomis</label>
-            <input type="text" id="umur_ekonomis" readonly value="{{ $asset->nilai_residu ?? old('umur_ekonomis') }}" class="form-control @error('umur_ekonomis') is-invalid @enderror" name="umur_ekonomis">
+            <input type="text" id="umur_ekonomis" readonly value="{{ $asset->umur_ekonomis ?? old('umur_ekonomis') }}" class="form-control @error('umur_ekonomis') is-invalid @enderror" name="umur_ekonomis">
             @error('umur_ekonomis')
             <div class="invalid-feedback">
                 <strong>{{ $message }}</strong>

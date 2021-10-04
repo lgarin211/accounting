@@ -14,4 +14,16 @@ class Asset extends Model
     {
         return $this->belongsTo(KelompokAktiva::class, 'kelompok_id');
     }
+    public function akun_asset_harta()
+    {
+        return $this->belongsTo(Akun::class, 'asset_harta');
+    }
+    public function akun_akumulasi_depresiasi()
+    {
+        return $this->belongsTo(Akun::class, 'akumulasi_depresiasi');
+    }
+    public function akun_depresiasi()
+    {
+        return $this->belongsTo(Akun::class, 'depresiasi');
+    }
 }

@@ -23,7 +23,6 @@ Route::name('api.')->group(function () {
     Route::prefix('select2')->name('select2.')->group(function () {
         // Kontak
         Route::post('/get-kontak', 'Admin\JurnalUmumController@getKontak')->name('get-kontak');
-        Route::post('/get-kontak-paginate', 'Admin\JurnalUmumController@getKontakPaginate')->name('get-kontak-paginate');
         Route::get('/get-kontak/{kontak}', 'Admin\JurnalUmumController@kontakSelected')->name('get-kontak.selected');
         Route::prefix('kontak')->name('kontak.')->group(function () {
             Route::post('/nasabah', 'Api\KontakController@getNasabah')->name('nasabah');
@@ -103,4 +102,6 @@ Route::name('api.')->group(function () {
         Route::post('datatables', 'Api\TemplateJurnalController@getTemplateDatatables')->name('datatables');
     });
     Route::get('/asset/kelompok/{id}', 'Api\AssetController@AssetKelompok');
+    Route::get('/asset/kategori/{value}', 'Api\AssetController@AssetKategori');
+    Route::get('/asset/subklasifikasi/{value}', 'Api\AssetController@AssetSubklasifikasi');
 });
