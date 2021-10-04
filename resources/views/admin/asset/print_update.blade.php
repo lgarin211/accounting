@@ -157,6 +157,7 @@
                     <input type="hidden" value="{{ $attr['asset_harta'] }}" name="asset_harta">
                     <input type="hidden" value="{{ $attr['akumulasi_depresiasi'] }}" name="akumulasi_depresiasi">
                     <input type="hidden" value="{{ $attr['depresiasi'] }}" name="depresiasi">
+                    <input type="hidden" value="{{ $attr['total_penyusutan'] }}" name="total_penyusutan">
                     <button class="btn btn-success" onclick="TheFormSubmit()">Update</button>
                 </form>
             </div>
