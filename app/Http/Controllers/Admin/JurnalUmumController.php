@@ -370,6 +370,45 @@ class JurnalUmumController extends Controller
         return $result;
     }
 
+    public function getKontakPaginate(Request $request)
+    {
+        $search = $request->search;
+        $page = $request->page;
+        $result_count = 10;
+        $offset = ($page - 1) * $result_count;
+
+        $contacts = Kontak::select('id', 'nama', 'email', 'nik', 'telepon')
+            ->where('nama', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->orWhere('nik', 'like', "%{$search}%")
+            ->orWhere('telepon', 'like', "%{$search}%")
+            ->orderBy('nama', 'ASC')
+            ->skip($offset)->take($result_count)->get();
+
+        $endCount = $offset + $result_count;
+        $morePages = Kontak::count() > $endCount;
+
+        $data = [];
+        foreach ($contacts as $kontak) {
+            $data[] = [
+                "id" => $kontak->id,
+                "text" => $kontak->nama,
+                "nama" => $kontak->nama,
+                "email" => $kontak->email,
+                "telepon" => $kontak->telepon
+            ];
+        }
+
+        $result = [
+            'results' => $data,
+            'pagination' => [
+                'more' => $morePages
+            ]
+        ];
+
+        return response()->json($result);
+    }
+
     public function kontakSelected(Kontak $kontak)
     {
         $result = [

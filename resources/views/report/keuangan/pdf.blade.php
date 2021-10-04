@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
@@ -36,8 +37,9 @@
                     <th>Permohonan <i>Salary Crediting</i> BRI untuk Batlab TWP AD Agustus 2021</th>
                 </tr>
             </table> -->
-            <p class="text-right">{{ date('F Y') }}</p>
-            <hr>
+            <p class="
+                text-right">{{ date('F Y') }}</p>
+                <hr>
         </div>
     </div>
     <div class="border p-4">
@@ -86,6 +88,13 @@
                 <th>{{ 'Rp. ' . number_format($laba_bersih, 0, ',', '.') }}</th>
             </tr>
         </table>
+        <hr>
+        <h6 class="text-right">{{ $tempat . ', ' . $nowDate }}</h6>
+        <h6 class="text-right">a.n {{ $kodam }}</h6>
+        <h6 class="text-right">{{ $jabatan_fungsional }}</h6>
+        <p style="height: 65px;"></p>
+        <h6 class="text-right">{{ $nama }}</h6>
+        <h6 class="text-right">{{ $pangkat . ' NRP ' . $nrp }}</h6>
     </div>
 </body>
 
