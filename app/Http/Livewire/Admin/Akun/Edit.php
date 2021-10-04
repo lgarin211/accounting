@@ -17,6 +17,7 @@ class Edit extends Component
         'akun.subklasifikasi' => 'required',
         'akun.level' => 'required',
         'akun.saldo_awal' => 'required|numeric',
+        'akun.kategori_asset' => 'string|in:Akumulasi Kendaraan,Akumulasi Gedung,Akumulasi Mesin dan Peralatan,Akumulasi Tanah'
     ];
 
     public function render()

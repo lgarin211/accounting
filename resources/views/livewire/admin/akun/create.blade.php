@@ -98,6 +98,30 @@
                         </div>
                     </div>
 
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">
+                                <label for="kategori_asset">Kategori Asset</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <select id="kategori_asset" name="kategori_asset" wire:model="kategori_asset"
+                                    wire:loading.attr="disabled" wire:target="store" 
+                                    class="form-control @error('kategori_asset') is-invalid @enderror">
+                                    <option>-- Pilih Kategori Asset --</option>
+                                    <option value="Akumulasi Kendaraan">Akumulasi kendaraan</option>
+                                    <option value="Akumulasi Gedung">Akumulasi gedung</option>
+                                    <option value="Akumulasi Mesin dan Peralatan">Akumulasi mesin dan peralatan</option>
+                                    <option value="Akumulasi Tanah">Akumulasi tanah</option>
+                                </select>
+                                @error('kategori_asset')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-sm-9 offset-sm-3">
                         <button type="submit" class="btn btn-primary" style="width: 100px"
                             wire:loading.attr="disabled" wire:target="store">
