@@ -210,7 +210,6 @@
                                         <h4 class="text-right">Rp. {{ number_format($row->where('level', $row->level)->where('subklasifikasi_id', $row->subklasifikasi_id)->sum('saldo_akhir')) }}</h4>
                                     </div>
                                 </li>
-
                             </ul>
                             @endforeach
                             <div class="form-group">

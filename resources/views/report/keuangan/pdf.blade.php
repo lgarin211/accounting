@@ -94,7 +94,8 @@
         <h6 class="text-right">{{ $jabatan_fungsional }}</h6>
         <p style="height: 65px;"></p>
         <h6 class="text-right">{{ $nama }}</h6>
-        <h6 class="text-right">{{ $pangkat . ' NRP ' . $nrp }}</h6>
+        <h6 class="text-right">{{ $pangkat}}</h6>
+        <h6 class="text-right">{{ $nrp }}</h6>
     </div>
 </body>
 
