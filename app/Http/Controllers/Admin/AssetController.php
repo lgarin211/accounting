@@ -36,7 +36,8 @@ class AssetController extends Controller
         return view('admin.asset.create', [
             'asset' => new Asset(),
             'kelompok' => KelompokAktiva::get(),
-            'akun' => Akun::get()
+            'akun' => Akun::get(),
+            'category' => Akun::get()->unique('kategori_asset')
         ]);
     }
 
@@ -154,7 +155,8 @@ class AssetController extends Controller
         return view('admin.asset.edit', [
             'asset' => Asset::find($id),
             'kelompok' => KelompokAktiva::get(),
-            'akun' => Akun::get()
+            'akun' => Akun::get(),
+            'category' => Akun::get()->unique('kategori_asset')
         ]);
     }
 
@@ -250,6 +252,7 @@ class AssetController extends Controller
 
         $hasil = $request->umur_ekonomis * 12;
 
+        $total_penyusutan_bulan = [];
         for ($i = 0; $i < $hasil; $i++) {
             $collection->push((object)[
                 'tanggal' => Carbon::parse($request->tanggal_beli)->addMonths($i)->endOfMonth()->format('Y-m-d'),
@@ -257,11 +260,13 @@ class AssetController extends Controller
                 'penyusutan_bulanan' => $beban_bulan,
                 'nilai_buku' => $harga_beli -= $beban_bulan
             ]);
+            array_push($total_penyusutan_bulan, $beban_bulan);
         }
-
+        $total_penyusutan = array_sum($total_penyusutan_bulan);
         // dd($request->all());
         $carbon = Carbon::parse($attr['tanggal_beli'])->addYear($attr['umur_ekonomis'])->format('Y-m-d');
         // dd($carbon, $request->umur_ekonomis, $collection);
+        $attr['total_penyusutan'] = $total_penyusutan;
         $attr['harga_beli'] = str_replace(',', '', $request->harga_beli);
         $attr['nilai_residu'] = str_replace(',', '', $request->nilai_residu);
         $attr['akumulasi_beban'] = Akun::find($request->asset_harta)->kode;
@@ -325,6 +330,7 @@ class AssetController extends Controller
         $bulan = (int)Carbon::parse($request->tanggal_beli)->format('m');
 
         $hasil = $request->umur_ekonomis * 12;
+        $total_penyusutan_bulan = [];
 
         for ($i = 0; $i < $hasil; $i++) {
             $collection->push((object)[
@@ -333,11 +339,14 @@ class AssetController extends Controller
                 'penyusutan_bulanan' => $beban_bulan,
                 'nilai_buku' => $harga_beli -= $beban_bulan
             ]);
+            array_push($total_penyusutan_bulan, $beban_bulan);
         }
+        $total_penyusutan = array_sum($total_penyusutan_bulan);
 
         // dd($request->all());
         $carbon = Carbon::parse($attr['tanggal_beli'])->addYear($attr['umur_ekonomis'])->format('Y-m-d');
         // dd($carbon, $request->umur_ekonomis, $collection);
+        $attr['total_penyusutan'] = $total_penyusutan;
         $attr['harga_beli'] = str_replace(',', '', $request->harga_beli);
         $attr['nilai_residu'] = str_replace(',', '', $request->nilai_residu);
         $attr['akumulasi_beban'] = Akun::find($request->asset_harta)->kode;

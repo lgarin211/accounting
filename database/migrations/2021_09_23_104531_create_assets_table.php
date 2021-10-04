@@ -27,6 +27,7 @@ class CreateAssetsTable extends Migration
             $table->unsignedBigInteger('asset_harta');
             $table->unsignedBigInteger('akumulasi_depresiasi');
             $table->unsignedBigInteger('depresiasi');
+            $table->bigInteger('total_penyusutan');
             $table->timestamps();
         });
     }
