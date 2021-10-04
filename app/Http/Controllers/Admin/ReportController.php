@@ -169,6 +169,10 @@ class ReportController extends Controller
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
 
+            $JU_Akun = Jurnalumumdetail::whereBetween('created_at', [$start, $end])->whereHas('akun', function ($query) {
+                $query->where('level', 'BiayaOperasional');
+            })->get();
+
             $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                                                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
                                                 ->where('akuns.level','BiayaOperasional')
@@ -176,6 +180,14 @@ class ReportController extends Controller
                                                 ->whereBetween('bkks.tanggal', [$start, $end])
                                                 ->select('jml_uang')
                                                 ->sum('jml_uang');
+                                
+            $BKK_Biaya = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','BiayaOperasional')
+                                                ->where('bkks.status','BKK')
+                                                ->whereBetween('bkks.tanggal', [$start, $end])
+                                                ->select('jml_uang','akuns.name as name','akuns.kode as kode')
+                                                ->get();
 
             $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                                                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
@@ -195,6 +207,10 @@ class ReportController extends Controller
             $JU_AkunBO = Jurnalumumdetail::whereHas('akun', function ($query) {
                 $query->where('level', 'BiayaOperasional');
             })->sum('debit');
+
+            $JU_Akun = Jurnalumumdetail::whereHas('akun', function ($query) {
+                $query->where('level', 'BiayaOperasional');
+            })->get();
             
             $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                                                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
@@ -202,6 +218,13 @@ class ReportController extends Controller
                                                 ->where('bkks.status','BKK')
                                                 ->select('jml_uang')
                                                 ->sum('jml_uang');
+
+            $BKK_Biaya = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
+                                                ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
+                                                ->where('akuns.level','BiayaOperasional')
+                                                ->where('bkks.status','BKK')
+                                                ->select('jml_uang','akuns.name as name','akuns.kode as kode')
+                                                ->get();
 
             $BKM_PendapatLain = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                                                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')    
@@ -220,7 +243,9 @@ class ReportController extends Controller
             'laba_bersih' => $laba_bersih,
             'beban' => $beban,
             'BiayaOperasional' => $BiayaOperasional,
-            'PendapatanLain' => $BKM_PendapatLain
+            'PendapatanLain' => $BKM_PendapatLain,
+            'Biaya' => $BKK_Biaya,
+            'Biaya_JU' => $JU_Akun
         ]);
     }
 

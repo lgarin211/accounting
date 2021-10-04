@@ -33,7 +33,7 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</td>
                                 </tr>
-                                <tr>
+                                <tr class="border-top border-bottom">
                                     <th class="text-primary">
                                         Pendapatan Lain
                                     </th>
@@ -51,12 +51,28 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</td>
                                 </tr> --}}
-                                <tr>        
+                                <tr >        
                                     <th class="text-primary">
                                         Biaya Operasional
                                     </th>
-                                    <td class="text-right">{{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
+                                    <td class="text-right">Total = {{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
                                 </tr>
+                                @foreach ($Biaya_JU as $item)
+                                <tr >
+                                    <th class="text-primary">
+                                       -> Jurnal Umum - {{$item->akun->name}}
+                                    </th>
+                                    <td class="text-right">{{ 'Rp. ' . number_format($item->debit, 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                                @foreach ($Biaya as $item)
+                                <tr >
+                                    <th class="text-primary">
+                                       -> Kas & Bank - {{$item->name}}
+                                    </th>
+                                    <td class="text-right">{{ 'Rp. ' . number_format($item->jml_uang, 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
                                 <tr class="border-top border-bottom">
                                     <th class="text-primary">
                                         Laba Bersih
