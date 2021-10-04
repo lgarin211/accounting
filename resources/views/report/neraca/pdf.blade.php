@@ -115,6 +115,13 @@
             @endforeach
             <h5 class="text-info">Total Modal</h5>
             <h4 class="text-right">Rp. {{ number_format($total_modal) }}</h4>
+            <hr>
+            <h6 class="text-right">{{ $tempat . ', ' . $nowDate }}</h6>
+            <h6 class="text-right">a.n {{ $kodam }}</h6>
+            <h6 class="text-right">{{ $jabatan_fungsional }}</h6>
+            <p style="height: 65px;"></p>
+            <h6 class="text-right">{{ $nama }}</h6>
+            <h6 class="text-right">{{ $pangkat . ' NRP ' . $nrp }}</h6>
         </div>
     </div>
 </body>

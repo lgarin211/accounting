@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Jakarta');
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
                 return redirect()->route('admin.report.keuangan.menu');
             })->name('menu');
             Route::name('keuangan.')->prefix('keuangan')->group(function () {
-                Route::view('/', 'report.menu')->name('menu');
+                Route::get('/', 'ReportController@menu')->name('menu');
 
                 // jurnal umum report
                 Route::get('/jurnal-umum', 'ReportController@jurnalumum')->name('jurnalumum');
