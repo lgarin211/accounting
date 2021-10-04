@@ -10,4 +10,26 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function formatDate($date)
+    {
+        $months = array(
+            1 =>   'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        );
+
+        $result = explode('-', $date);
+
+        return $result[2] . ' ' . $months[(int)$result[1]] . ' ' . $result[0];
+    }
 }

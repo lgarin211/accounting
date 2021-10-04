@@ -14,7 +14,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-around">
-                        <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.pdf') }}" class="btn btn-danger">PDF</a>
+                        <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.pdf', ['tempat' => $tempat, 'kodam' => $kodam, 'jabatan_fungsional' => $jabatan_fungsional, 'nama' => $nama, 'pangkat' => $pangkat, 'pangkat' => $pangkat, 'nrp' => $nrp]) }}" class="btn btn-danger">PDF</a>
                         {{-- Takeout sementara --}}
                         {{-- <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.excel') }}" class="btn btn-success">EXCEL</a> --}}
                     </div>
@@ -33,7 +33,7 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($pendapatan, 0, ',', '.') }}</td>
                                 </tr>
-                                <tr>
+                                <tr class="border-top border-bottom">
                                     <th class="text-primary">
                                         Pendapatan Lain
                                     </th>
@@ -51,12 +51,28 @@
                                     </th>
                                     <td class="text-right">{{ 'Rp. ' . number_format($laba_kotor, 0, ',', '.') }}</td>
                                 </tr> --}}
-                                <tr>        
+                                <tr >        
                                     <th class="text-primary">
                                         Biaya Operasional
                                     </th>
-                                    <td class="text-right">{{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
+                                    <td class="text-right">Total = {{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
                                 </tr>
+                                @foreach ($Biaya_JU as $item)
+                                <tr >
+                                    <th class="text-primary">
+                                       -> Jurnal Umum - {{$item->akun->name}}
+                                    </th>
+                                    <td class="text-right">{{ 'Rp. ' . number_format($item->debit, 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                                @foreach ($Biaya as $item)
+                                <tr >
+                                    <th class="text-primary">
+                                       -> Kas & Bank - {{$item->name}}
+                                    </th>
+                                    <td class="text-right">{{ 'Rp. ' . number_format($item->jml_uang, 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
                                 <tr class="border-top border-bottom">
                                     <th class="text-primary">
                                         Laba Bersih
@@ -64,6 +80,17 @@
                                     <td class="text-right">{{ 'Rp. ' . number_format($laba_bersih, 0, ',', '.') }}</td>
                                 </tr>
                             </table>
+                            <div class="form-group text-right mt-2">
+                                <label>{{ $tempat . ', ' . $nowDate }}</label>
+                                <br>
+                                <label>a.n {{ $kodam }}</label>
+                                <br>
+                                <label>{{ $jabatan_fungsional }}</label>
+                                <p style="height: 50px;"></p>
+                                <label>{{ $nama }}</label>
+                                <br>
+                                <label>{{ $pangkat . ' NRP ' . $nrp }}</label>
+                            </div>
                         </div>
                     </div>
                 </div>

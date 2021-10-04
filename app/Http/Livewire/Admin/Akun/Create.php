@@ -7,7 +7,7 @@ use App\Models\Akun;
 
 class Create extends Component
 {
-    public $kode, $name, $subklasifikasi, $level, $saldo_awal;
+    public $kode, $name, $subklasifikasi, $level, $saldo_awal, $kategori_asset;
 
     public $levels = [];
 
@@ -20,6 +20,7 @@ class Create extends Component
         'name' => 'required',
         'subklasifikasi' => 'required',
         'saldo_awal' => 'required|numeric',
+        'kategori_asset' => 'string|in:Akumulasi Kendaraan,Akumulasi Gedung,Akumulasi Mesin dan Peralatan,Akumulasi Tanah'
     ];
 
     public function kodeOtomatis()

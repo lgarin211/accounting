@@ -42,7 +42,7 @@ class Edit extends Component
             $this->emit('error', 'Data gagal diedit');
         }
 
-        $this->reset(['isOpen', 'akun']);
+        $this->reset(['isOpen', 'divisi']);
         $this->emit('refresh', 'Data berhasil diedit');
     }
 }
