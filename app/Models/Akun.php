@@ -53,4 +53,17 @@ class Akun extends Model
     {
         return $this->hasMany(Transaction::class, 'akun_id');
     }
+    public function asset_harta()
+    {
+        return $this->hasMany(Asset::class, 'asset_harta');
+    }
+    public function akumulasi_depresiasi()
+    {
+        return $this->hasMany(Asset::class, 'akumulasi_depresiasi');
+    }
+    public function depresiasi()
+    {
+        return $this->hasMany(Asset::class, 'depresiasi');
+
+    }
 }

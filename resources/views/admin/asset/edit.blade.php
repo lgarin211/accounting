@@ -34,20 +34,47 @@
 @stop
 @push('script')
 <script>
-    function OnSelect()
-    {
+    function OnSelectKelompok() {
         console.log($('#kelompok').val())
         $.ajax({
-            url: '/api/asset/kelompok/'+$('#kelompok').val(),
-            success: function(response){
+            url: '/api/asset/kelompok/' + $('#kelompok').val(),
+            success: function(response) {
                 $('#metode').val(response.metode)
                 $('#umur_ekonomis').val(response.umur)
             },
-            error: function(err){
+            error: function(err) {
                 alert(err)
             }
         })
     }
+
+    function OnSelectCategory() {
+        console.log($('#category').val())
+        $.ajax({
+            url: '/api/asset/kategori/' + $('#category').val(),
+            success: function(response) {
+                $('#asset_harta').html('')
+                $('#akumulasi_depresiasi').html('')
+                $('#depresiasi').html('')
+                $('#asset_harta').append('<option>--Pilih Asset Harta--</option>')
+                $('#akumulasi_depresiasi').append('<option>--Pilih Akumulasi Depresiasi--</option>')
+                $('#depresiasi').append('<option>--Pilih Depresiasi--</option>')
+                $.each(response, function() {
+                    $('#asset_harta').append('<option value="' + this.id + '">' + this.kode + ' - ' + this.name + '</option>')
+                    $('#akumulasi_depresiasi').append('<option value="' + this.id + '">' + this.kode + ' - ' + this.name + '</option>')
+                    $('#depresiasi').append('<option value="' + this.id + '">' + this.kode + ' - ' + this.name + '</option>')
+                })
+            },
+            error: function(err) {
+                Swal.fire(
+                    'Alert!',
+                    'Akun Kategori Tidak Ditemukan!',
+                    'warning'
+                )
+            }
+        })
+    }
+
     function TheFormSubmit() {
         $('#form').submit()
     }

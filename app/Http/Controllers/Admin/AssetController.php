@@ -36,7 +36,8 @@ class AssetController extends Controller
         return view('admin.asset.create', [
             'asset' => new Asset(),
             'kelompok' => KelompokAktiva::get(),
-            'akun' => Akun::get()
+            'akun' => Akun::get(),
+            'category' => Akun::get()->unique('kategori_asset')
         ]);
     }
 
@@ -154,7 +155,8 @@ class AssetController extends Controller
         return view('admin.asset.edit', [
             'asset' => Asset::find($id),
             'kelompok' => KelompokAktiva::get(),
-            'akun' => Akun::get()
+            'akun' => Akun::get(),
+            'category' => Akun::get()->unique('kategori_asset')
         ]);
     }
 
