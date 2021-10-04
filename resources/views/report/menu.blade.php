@@ -84,7 +84,7 @@
                                     <input type="text" class="form-control mr-1 mb-2"
                                         name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
 
-                                    <label for="kodam" class="mr-2">Kodam</label>
+                                    <label for="kodam" class="mr-2">Instansi</label>
                                     <input type="text" class="form-control mr-1 mb-2"
                                         name="kodam" id="kodam" required>
 
@@ -161,7 +161,7 @@
                                     <input type="text" class="form-control mr-1 mb-2"
                                         name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
 
-                                    <label for="kodam" class="mr-2">Kodam</label>
+                                    <label for="kodam" class="mr-2">Instansi</label>
                                     <input type="text" class="form-control mr-1 mb-2"
                                         name="kodam" id="kodam" required>
 
