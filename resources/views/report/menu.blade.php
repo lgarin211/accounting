@@ -81,8 +81,8 @@
                                         name="tempat" id="tempat" required>
 
                                     <label for="tanggal" class="mr-2">Tanggal</label>
-                                    <input type="text" class="form-control mr-1 mb-2"
-                                        name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
+                                    <input type="date" class="form-control mr-1 mb-2"
+                                        name="tanggal" id="tanggal" required>
 
                                     <label for="kodam" class="mr-2">Instansi</label>
                                     <input type="text" class="form-control mr-1 mb-2"
@@ -158,8 +158,8 @@
                                         name="tempat" id="tempat" required>
 
                                     <label for="tanggal" class="mr-2">Tanggal</label>
-                                    <input type="text" class="form-control mr-1 mb-2"
-                                        name="tanggal" id="tanggal" value="{{ $nowDate }}" required readonly>
+                                    <input type="date" class="form-control mr-1 mb-2"
+                                        name="tanggal" id="tanggal" required>
 
                                     <label for="kodam" class="mr-2">Instansi</label>
                                     <input type="text" class="form-control mr-1 mb-2"
