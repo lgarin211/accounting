@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-around">
                             <a target="_blank"
-                                href="{{ route('admin.report.keuangan.labarugi.pdf', ['tempat' => $tempat, 'kodam' => $kodam, 'jabatan_fungsional' => $jabatan_fungsional, 'nama' => $nama, 'pangkat' => $pangkat, 'pangkat' => $pangkat, 'nrp' => $nrp]) }}"
+                                href="{{ route('admin.report.keuangan.labarugi.pdf', ['tempat' => $tempat, 'kodam' => $kodam, 'jabatan_fungsional' => $jabatan_fungsional, 'nama' => $nama, 'pangkat' => $pangkat, 'pangkat' => $pangkat, 'nrp' => $nrp, 'tanggal' => $nowDate]) }}"
                                 class="btn btn-danger">PDF</a>
                             {{-- Takeout sementara --}}
                             {{-- <a target="_blank" href="{{ route('admin.report.keuangan.labarugi.excel') }}" class="btn btn-success">EXCEL</a> --}}
