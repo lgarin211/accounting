@@ -145,15 +145,13 @@
                             </div>
                             <hr>
                             <div class="form-group text-right">
-                                <label>{{ $tempat . ', ' . $nowDate }}</label>
-                                <br>
-                                <label>a.n {{ $kodam }}</label>
-                                <br>
-                                <label>{{ $jabatan_fungsional }}</label>
+                                <p>{{ $tempat . ', ' . $nowDate }}</p>
+                                <p>a.n {{ $kodam }}</p>
+                                <p>{{ $jabatan_fungsional }}</p>
                                 <p style="height: 50px;"></p>
-                                <label>{{ $nama }}</label>
-                                <br>
-                                <label>{{ $pangkat . ' NRP ' . $nrp }}</label>
+                                <p>{{ $nama }}</p>
+                                <p>{{ $pangkat }}</p>
+                                <p>{{ $nrp }}</p>
                             </div>
                         </div>
                     </div>
