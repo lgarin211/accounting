@@ -25,7 +25,7 @@
                 <div class="card rounded">
                     <p class="text-black text-center pt-2 font-weight-bolder">Direktorat Keuangan TNI Angkatan Darat</p>
                     <h2 class="text-center text-primary">Laba Rugi</h2>
-                    <p class="text-black text-center">{{ date('F Y') }}</p>
+                    <p class="text-black text-center">{{ date('d F Y', Request::get('startDate'))  }} - {{ date('d F Y', Request::get('endDate')) }}</p>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-borderless border">
@@ -58,27 +58,35 @@
                                     <th class="text-primary">
                                         Biaya Operasional
                                     </th>
-                                    <td class="text-right">Total =
-                                        {{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
+                                    
                                 </tr>
                                 @foreach ($Biaya_JU as $item)
                                     <tr>
-                                        <th class="text-primary">
-                                            -> Jurnal Umum - {{ $item->akun->name }}
+                                        <th class="text-danger">
+                                            - {{ $item->akun->name }}
                                         </th>
                                         <td class="text-right">{{ 'Rp. ' . number_format($item->debit, 0, ',', '.') }}
                                         </td>
+
                                     </tr>
                                 @endforeach
                                 @foreach ($Biaya as $item)
                                     <tr>
-                                        <th class="text-primary">
-                                            -> Kas & Bank - {{ $item->name }}
+                                        <th class="text-danger">
+                                            - {{ $item->name }}
                                         </th>
                                         <td class="text-right">
                                             {{ 'Rp. ' . number_format($item->jml_uang, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
+
+                                <tr>
+                                    <th class="text-danger">
+                                        - Total
+                                    </th>
+                                    <td class="text-right">
+                                        {{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
+                                </tr>
                                 <tr class="border-top border-bottom">
                                     <th class="text-primary">
                                         Laba Bersih
