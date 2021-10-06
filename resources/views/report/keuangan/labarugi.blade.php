@@ -25,7 +25,7 @@
                 <div class="card rounded">
                     <p class="text-black text-center pt-2 font-weight-bolder">Direktorat Keuangan TNI Angkatan Darat</p>
                     <h2 class="text-center text-primary">Laba Rugi</h2>
-                    <p class="text-black text-center">{{ date('d F Y', Request::get('startDate'))  }} - {{ date('d F Y', Request::get('endDate')) }}</p>
+                    <p class="text-black text-center">{{ date('d F Y', strtotime(Request::get('startDate')))  }} - {{ date('d F Y', strtotime(Request::get('endDate'))) }}</p>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-borderless border">
