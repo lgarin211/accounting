@@ -52,7 +52,7 @@
                                 <div class="modal-body">
                                     <label for="startDate" class="mr-2">Tanggal Awal</label>
                                     <input type="date" class="form-control @error('startDate') is-invalid @enderror"
-                                        name="startDate" id="startDate">
+                                        name="startDate" id="startDate" required>
                                     @error('startDate')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@
 
                                     <label for="endDate" class="mr-2">Tanggal Akhir</label>
                                     <input type="date" class="form-control @error('endDate') is-invalid @enderror mr-1"
-                                        name="endDate" id="endDate">
+                                        name="endDate" id="endDate" required>
                                     @error('endDate')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -129,7 +129,7 @@
                                 <div class="modal-body">
                                     <label for="startDate" class="mr-2">Tanggal Awal</label>
                                     <input type="date" class="form-control @error('startDate') is-invalid @enderror"
-                                        name="startDate" id="startDate">
+                                        name="startDate" id="startDate" required>
                                     @error('startDate')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -140,7 +140,7 @@
 
                                     <label for="endDate" class="mr-2">Tanggal Akhir</label>
                                     <input type="date" class="form-control @error('endDate') is-invalid @enderror mr-1"
-                                        name="endDate" id="endDate">
+                                        name="endDate" id="endDate" required>
                                     @error('endDate')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
