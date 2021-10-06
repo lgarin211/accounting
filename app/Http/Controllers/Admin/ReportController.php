@@ -226,17 +226,18 @@ class ReportController extends Controller
             $laba_kotor = $pendapatan - $beban;
 
             $JU_AkunBO = Jurnalumumdetail::whereHas('akun', function ($query) {
-                $query->where('level', 'BiayaOperasional');
+                $query->where('level', 'BiayaOperasional')->orderBy('kode', 'asc');
             })->sum('debit');
 
             $JU_Akun = Jurnalumumdetail::whereHas('akun', function ($query) {
-                $query->where('level', 'BiayaOperasional');
+                $query->where('level', 'BiayaOperasional')->orderBy('kode', 'asc');
             })->get();
 
             $BKK_AkunBO = DB::table('bkk_details')->join('akuns', 'bkk_details.rekening_id', '=', 'akuns.id')
                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                 ->where('akuns.level', 'BiayaOperasional')
                 ->where('bkks.status', 'BKK')
+                ->orderBy('akuns.kode', 'asc')
                 ->select('jml_uang')
                 ->sum('jml_uang');
 
@@ -244,6 +245,7 @@ class ReportController extends Controller
                 ->join('bkks', 'bkk_details.bkk_id', '=', 'bkks.id')
                 ->where('akuns.level', 'BiayaOperasional')
                 ->where('bkks.status', 'BKK')
+                ->orderBy('akuns.kode', 'asc')
                 ->select('jml_uang', 'akuns.name as name', 'akuns.kode as kode')
                 ->get();
 
