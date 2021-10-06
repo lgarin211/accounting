@@ -63,7 +63,7 @@
                                 @foreach ($Biaya_JU as $item)
                                     <tr>
                                         <th class="text-danger">
-                                            - {{ $item->akun->name }}
+                                            {{ $item->akun->kode }} - {{ $item->akun->name }}
                                         </th>
                                         <td class="text-right">{{ 'Rp. ' . number_format($item->debit, 0, ',', '.') }}
                                         </td>
@@ -73,7 +73,7 @@
                                 @foreach ($Biaya as $item)
                                     <tr>
                                         <th class="text-danger">
-                                            - {{ $item->name }}
+                                            {{ $item->kode }} - {{ $item->name }}
                                         </th>
                                         <td class="text-right">
                                             {{ 'Rp. ' . number_format($item->jml_uang, 0, ',', '.') }}</td>
@@ -82,7 +82,7 @@
 
                                 <tr>
                                     <th class="text-danger">
-                                        - Total
+                                        Total
                                     </th>
                                     <td class="text-right">
                                         {{ 'Rp. ' . number_format($BiayaOperasional, 0, ',', '.') }}</td>
