@@ -50,14 +50,14 @@
                                         <h4 class="text-right text-primary">Rp. {{ number_format($row->debit) }}</h4>
                                     </div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="" class="text-danger">
                                             <a class="text-danger" href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
                                                 Total Asset {{ $row->name }}
                                             </a>
                                         </label>
                                         <h4 class="text-right text-danger">Rp. {{ number_format($row->asset_harta->sum('total_penyusutan')) }}</h4>
-                                    </div>
+                                    </div> -->
                                 </li>
 
                             </ul>
@@ -95,14 +95,14 @@
                                         <h4 class="text-right text-primary">Rp. {{ number_format($row->kredit) }}</h4>
                                     </div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="" class="text-danger">
                                             <a class="text-danger" href="{{route('admin.report.keuangan.neraca.detail',$row->id)}}">
                                                 Total Asset {{ $row->name }}
                                             </a>
                                         </label>
                                         <h4 class="text-right text-danger">Rp. {{ number_format($row->asset_harta->sum('total_penyusutan')) }}</h4>
-                                    </div>
+                                    </div> -->
                                 </li>
 
                             </ul>
