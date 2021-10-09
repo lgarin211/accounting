@@ -87,14 +87,14 @@ class BkkController extends Controller
                 foreach ($request->bkk as $detail) {
                     $jumlah_uang = (int)preg_replace('/[^\d.]/', '', $detail['jumlah']);
                     DB::table('akuns')->where('id',$detail['rekening'])->update([
-                        'kredit'=> DB::raw('kredit + '.$jumlah_uang) 
+                        'debit'=> DB::raw('debit + '.$jumlah_uang) 
                     ]);
                     // Laporan Neraca
                     Transaction::create([
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
-                        'kredit' => $jumlah_uang,
-                        'debit' => 0,
+                        'kredit' => 0,
+                        'debit' => $jumlah_uang,
                         'type' => 'Buku Kas Keluar'
                     ]);
                     //laporan Laba Rugi
@@ -102,8 +102,8 @@ class BkkController extends Controller
                         'tanggal' => $request['tanggal'],
                         'name' => $detail['catatan'] . ' ' . date('d-M-Y'),
                         'akun_id' => $detail['rekening'],
-                        'kredit' => $jumlah_uang,
-                        'debit' => 0,
+                        'kredit' => 0,
+                        'debit' => $jumlah_uang,
                         'type' => 'Buku Kas Keluar'
                     ]);
                     BkkDetail::create([
@@ -116,14 +116,14 @@ class BkkController extends Controller
                     $totalUang += $jumlah_uang;
                 }
                 DB::table('akuns')->where('id',$request['rekening_id'])->update([
-                    'debit'=> DB::raw('debit + '.$totalUang) 
+                    'kredit'=> DB::raw('kredit + '.$totalUang) 
                 ]);
                 //laporan Neraca
                 Transaction::create([
                     'name' => $request['desk'] . ' ' . date('d-M-Y'),
                     'akun_id' => $request['rekening_id'],
-                    'kredit' => 0,
-                    'debit' => $totalUang,
+                    'kredit' => $totalUang,
+                    'debit' => 0,
                     'type' => 'Buku Kas Keluar'
                 ]);
                 //laporan Laba Rugi
@@ -131,8 +131,8 @@ class BkkController extends Controller
                     'tanggal' => $request['tanggal'],
                     'name' => $request['desk'] . ' ' . date('d-M-Y'),
                     'akun_id' => $request['rekening_id'],
-                    'kredit' => 0,
-                    'debit' => $totalUang,
+                    'kredit' => $totalUang,
+                    'debit' => 0,
                     'type' => 'Buku Kas Keluar'
                 ]);
                 $bkk->update(['value' => $totalUang]);
